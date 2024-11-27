@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 function Offer():JSX.Element{
+  const params = useParams();
+  console.log('----->', params);
   return(
     <main className="page__main page__main--offer">
       <section className="offer">

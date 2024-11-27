@@ -3,9 +3,10 @@ import MainPage from '../../pages/main-page/main-page';
 import Favorites from '../../pages/favorites/favorites';
 import Login from '../../pages/login/login';
 import Offer from '../../pages/offer/offer';
-import { AppRoute } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
+import PrivateRoute from '../private-route/private-route';
 
 type Props = {
   countOffers: number;
@@ -31,7 +32,11 @@ function App({countOffers}:Props): JSX.Element{
           />
           <Route
             path = {AppRoute.Offer}
-            element = {<Offer/>}
+            element = {
+              <PrivateRoute authorizationStatus={AuthorizationStatus.NoAuth}>
+                <Offer/>
+              </PrivateRoute>
+            }
           />
           <Route
             path = "*"
