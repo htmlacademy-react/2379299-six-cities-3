@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 import OfferCard from '../../components/offer-card/offer-card.tsx';
+import { Offers } from '../../types/offer.ts';
 
 type Props = {
   countOffers: number;
+  offers: Offers;
 }
 
-function MainPage({countOffers}:Props): JSX.Element{
+function MainPage({countOffers, offers}:Props): JSX.Element{
   return(
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -66,11 +68,7 @@ function MainPage({countOffers}:Props): JSX.Element{
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              <OfferCard />
-              <OfferCard />
-              <OfferCard />
-              <OfferCard />
-              <OfferCard />
+              {offers.map((offer) => <OfferCard key={offer.id} offer={offer}/>)}
             </div>
           </section>
           <div className="cities__right-section">
