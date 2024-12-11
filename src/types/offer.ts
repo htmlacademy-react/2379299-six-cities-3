@@ -1,4 +1,6 @@
+
 import { City } from './city';
+import { Location } from './location';
 
 export type Offer = {
   id: string;
@@ -6,6 +8,7 @@ export type Offer = {
   type: string;
   price: number;
   city: City;
+  location:Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;

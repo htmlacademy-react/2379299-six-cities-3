@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import OfferCard from '../../components/offer-card/offer-card.tsx';
 import { Offers } from '../../types/offer.ts';
+import Map from '../../components/map/map.tsx';
+
 
 type Props = {
   countOffers: number;
@@ -72,7 +74,9 @@ function MainPage({countOffers, offers}:Props): JSX.Element{
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map"></section>
+            <section className="cities__map map">
+              <Map offers = {offers}/>
+            </section>
           </div>
         </div>
       </div>

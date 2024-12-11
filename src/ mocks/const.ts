@@ -1,4 +1,4 @@
-export const citis = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 export const typeHousing = ['apartment', 'room', 'house', 'hotel'];
 export const titles = ['Beautiful studio overlooking the river', 'House overlooking the river', 'Cozy cottage in the forest', 'Apartment in the city center'];
 export const comma = [100000000000000, 1000000000000000];
