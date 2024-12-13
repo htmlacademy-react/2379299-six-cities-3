@@ -29,7 +29,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, offers]);
+  }, [mapRef, offers[0].city]);
 
   return map;
 }
