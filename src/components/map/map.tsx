@@ -1,4 +1,3 @@
-
 import leaflet from 'leaflet';
 import useMap from '../hooks/use-map';
 
@@ -11,7 +10,7 @@ type Props = {
 }
 
 function Map({offers}: Props) {
-  const mapRef = useRef(null);
+  const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, offers);
 
 
@@ -41,14 +40,11 @@ function Map({offers}: Props) {
           .addTo(map);
       });
     }
-  }, [map, offers]);
+  }, [map, offers, defaultCustomIcon]);
 
   return (
-    <div
-      ref={mapRef}
-      style={{height: '500px'}}
-    >
-    </div>
+    <section className="cities__map map" ref={mapRef} />
+
   );
 }
 

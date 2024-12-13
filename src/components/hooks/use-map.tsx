@@ -1,9 +1,10 @@
-import {useEffect, useState, useRef} from 'react';
+
 import leaflet from 'leaflet';
 import { Offers } from '../../types/offer';
+import { useEffect, useRef, useState } from 'react';
 
-function useMap(mapRef, offers: Offers) {
-  const [map, setMap] = useState(null);
+function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
+  const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function useMap(mapRef, offers: Offers) {
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, offers[0].city]);
+  }, [mapRef, offers]);
 
   return map;
 }

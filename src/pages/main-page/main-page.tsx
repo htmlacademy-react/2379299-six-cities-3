@@ -74,9 +74,7 @@ function MainPage({countOffers, offers}:Props): JSX.Element{
             </div>
           </section>
           <div className="cities__right-section">
-            <section className="cities__map map">
-              <Map offers = {offers}/>
-            </section>
+            <Map offers = {offers}/>
           </div>
         </div>
       </div>
