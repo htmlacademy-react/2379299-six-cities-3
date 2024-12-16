@@ -28,7 +28,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, offers[0].city]);
+  }, [mapRef, offers]);
 
   return map;
 }

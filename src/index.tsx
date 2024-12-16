@@ -9,7 +9,7 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const Props = {
+export const Props = {
   countOffers: 111,
   offers: offers,
   reviews: reviews
