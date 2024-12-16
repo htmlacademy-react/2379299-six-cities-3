@@ -9,7 +9,7 @@ function ReviewsItem({review}:Props):JSX.Element{
 
   const {user, comment, date} = review;
 
-  let formattedDate = dateFormat(date as string , 'mmmm yyyy');
+  const formattedDate = dateFormat(date, 'mmmm yyyy');
 
   return(
     <li className="reviews__item">
