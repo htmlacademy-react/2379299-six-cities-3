@@ -8,14 +8,17 @@ import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offer';
+import { Review } from '../../types/reviews';
 
 
 type Props = {
   countOffers: number;
   offers: Offers;
+  reviews: Review[];
+
 }
 
-function App({countOffers, offers}:Props): JSX.Element{
+function App({countOffers, offers, reviews}:Props): JSX.Element{
   return(
     <BrowserRouter>
       <Routes>
@@ -37,7 +40,7 @@ function App({countOffers, offers}:Props): JSX.Element{
             path = {AppRoute.Offer}
             element = {
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <OfferPage/>
+                <OfferPage reviews = {reviews}/>
               </PrivateRoute>
             }
           />
