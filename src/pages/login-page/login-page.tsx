@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function Login():JSX.Element{
+function LoginPage():JSX.Element{
   return(
     <main className="page__main page__main--login">
       <div className="page__login-container container">
@@ -29,4 +29,4 @@ function Login():JSX.Element{
     </main>
   );
 }
-export default Login;
+export default LoginPage;

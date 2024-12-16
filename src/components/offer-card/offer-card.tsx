@@ -1,6 +1,34 @@
-function OfferCard():JSX.Element{
+import { useState } from 'react';
+import { Offer } from '../../types/offer';
+import { Link } from 'react-router-dom';
+
+type Props = {
+  offer: Offer;
+}
+
+
+function OfferCard({offer}:Props):JSX.Element{
+  const [activeOffer, setActiveOffer] = useState(false);
+  const {title, price, type} = offer;
+  function changeMouseOver(){
+    setActiveOffer(true);
+  }
+  function changeMouseOut(){
+    setActiveOffer(false);
+  }
+
+  function changeOnClick(){
+    setActiveOffer(false);
+  }
+
+
   return(
-    <article className="cities__card place-card">
+    <article
+      className="cities__card place-card"
+      onMouseOver = {changeMouseOver}
+      onMouseOut = {changeMouseOut}
+
+    >
       <div className="place-card__mark">
         <span>Premium</span>
       </div>
@@ -12,7 +40,7 @@ function OfferCard():JSX.Element{
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
-            <b className="place-card__price-value">&euro;120</b>
+            <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button className="place-card__bookmark-button button" type="button">
@@ -28,10 +56,13 @@ function OfferCard():JSX.Element{
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2 className="place-card__name">
-          <a href="#">Beautiful &amp; luxurious apartment at great location</a>
+        <h2
+          className="place-card__name"
+          onClick={changeOnClick}
+        >
+          <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
-        <p className="place-card__type">Apartment</p>
+        <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
