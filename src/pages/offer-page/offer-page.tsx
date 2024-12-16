@@ -2,13 +2,16 @@ import { Link} from 'react-router-dom';
 import FormComments from './form-reviews';
 import { Review } from '../../types/reviews';
 import ReviewsItem from './reviews-item';
+import Map from '../../components/map/map';
+import { Offer } from '../../types/offer';
 
 type Props = {
   reviews: Review[];
+  offers: Offer[];
 
 }
 
-function OfferPage({reviews}:Props):JSX.Element{
+function OfferPage({reviews, offers}:Props):JSX.Element{
   return(
     <main className="page__main page__main--offer">
       <section className="offer">
@@ -138,7 +141,9 @@ function OfferPage({reviews}:Props):JSX.Element{
             </section>
           </div>
         </div>
-        <section className="offer__map map"></section>
+        <section>
+          <Map offers={offers} />
+        </section>
       </section>
       <div className="container">
         <section className="near-places places">

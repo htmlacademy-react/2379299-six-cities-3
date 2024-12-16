@@ -1,4 +1,3 @@
-
 import leaflet from 'leaflet';
 import { Offers } from '../../types/offer';
 import { useEffect, useRef, useState } from 'react';

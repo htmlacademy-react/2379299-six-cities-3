@@ -41,7 +41,7 @@ function Map({offers}: Props) {
   }, [map, offers, defaultCustomIcon]);
 
   return (
-    <section className="cities__map map" ref={mapRef} />
+    <section className="offer__map map" ref={mapRef} />
 
   );
 }

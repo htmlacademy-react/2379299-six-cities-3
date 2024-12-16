@@ -40,7 +40,7 @@ function App({countOffers, offers, reviews}:Props): JSX.Element{
             path = {AppRoute.Offer}
             element = {
               <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
-                <OfferPage reviews = {reviews}/>
+                <OfferPage reviews = {reviews} offers={offers}/>
               </PrivateRoute>
             }
           />
