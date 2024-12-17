@@ -1,5 +1,5 @@
+import dayjs from 'dayjs';
 import { Review } from '../../types/reviews';
-import dateFormat from 'dateformat';
 type Props = {
   review: Review;
 }
@@ -9,7 +9,8 @@ function ReviewsItem({review}:Props):JSX.Element{
 
   const {user, comment, date} = review;
 
-  let formattedDate = dateFormat(date as string , 'mmmm yyyy');
+  const formattedDate = dayjs(date).format('MMMM YYYY');
+
 
   return(
     <li className="reviews__item">
