@@ -4,7 +4,6 @@ import Map from '../../components/map/map.tsx';
 import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
 
-
 type Props = {
   countOffers: number;
   offers: Offers;
@@ -16,8 +15,6 @@ function MainPage({countOffers, cities, offers}:Props): JSX.Element{
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
 
-
-console.log(11111111, currentOffers);
   return(
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
