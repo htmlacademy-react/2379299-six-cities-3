@@ -9,7 +9,7 @@ type Props = {
 
 function OfferCard({offer}:Props):JSX.Element{
   const [activeOffer, setActiveOffer] = useState(false);
-  const {title, price, type} = offer;
+  const {title, price, type, previewImage} = offer;
   function changeMouseOver(){
     setActiveOffer(true);
   }
@@ -34,7 +34,7 @@ function OfferCard({offer}:Props):JSX.Element{
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </a>
       </div>
       <div className="place-card__info">

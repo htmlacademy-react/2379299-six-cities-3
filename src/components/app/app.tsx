@@ -10,15 +10,15 @@ import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offer';
 import { Review } from '../../types/reviews';
 
-
 type Props = {
   countOffers: number;
   offers: Offers;
   reviews: Review[];
+  cities: string[];
 
 }
 
-function App({countOffers, offers, reviews}:Props): JSX.Element{
+function App({countOffers, offers, cities, reviews}:Props): JSX.Element{
   return(
     <BrowserRouter>
       <Routes>
@@ -26,7 +26,7 @@ function App({countOffers, offers, reviews}:Props): JSX.Element{
           <Route
             index
             path = {AppRoute.Main}
-            element = {<MainPage countOffers={countOffers} offers={offers}/>}
+            element = {<MainPage countOffers={countOffers} cities={cities} offers={offers}/>}
           />
           <Route
             path = {AppRoute.Login}

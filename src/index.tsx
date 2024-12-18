@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
 import { offers } from './ mocks/offers';
 import { reviews } from './ mocks/reviews';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import { cities } from './ mocks/const';
 
 
 const root = ReactDOM.createRoot(
@@ -12,11 +15,14 @@ const root = ReactDOM.createRoot(
 export const Props = {
   countOffers: 111,
   offers: offers,
-  reviews: reviews
+  reviews: reviews,
+  cities: cities
 };
 
 root.render(
   <React.StrictMode>
-    <App countOffers = {Props.countOffers} offers = {Props.offers} reviews = {Props.reviews}/>
+    <Provider store={store}>
+      <App countOffers = {Props.countOffers} cities = {Props.cities} offers = {Props.offers} reviews = {Props.reviews}/>
+    </Provider>
   </React.StrictMode>
 );
