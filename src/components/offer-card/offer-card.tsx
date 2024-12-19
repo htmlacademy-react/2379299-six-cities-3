@@ -4,29 +4,32 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   offer: Offer;
+  onActiveOffer:(isActiveOffer: string) => void;
 }
 
 
-function OfferCard({offer}:Props):JSX.Element{
-  const [activeOffer, setActiveOffer] = useState(false);
-  const {title, price, type} = offer;
-  function changeMouseOver(){
-    setActiveOffer(true);
-  }
-  function changeMouseOut(){
-    setActiveOffer(false);
-  }
+function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
-  function changeOnClick(){
-    setActiveOffer(false);
+  const [activeOffer, setActiveOffer] = useState<string>('');
+  const {title, price, type, previewImage} = offer;
+  function changeMouseEnter(){
+    setActiveOffer(offer.id);
+    onActiveOffer(activeOffer);
+  }
+  function changeMouseLeave(){
+    setActiveOffer('');
   }
 
+  // function changeOnClick(){
+  //   setActiveOffer(false);
+  // }
 
+console.log(111111, activeOffer)
   return(
     <article
       className="cities__card place-card"
-      onMouseOver = {changeMouseOver}
-      onMouseOut = {changeMouseOut}
+      onMouseEnter = {changeMouseEnter}
+      onMouseLeave = {changeMouseLeave}
 
     >
       <div className="place-card__mark">
@@ -34,7 +37,7 @@ function OfferCard({offer}:Props):JSX.Element{
       </div>
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src="img/apartment-01.jpg" width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </a>
       </div>
       <div className="place-card__info">
@@ -58,7 +61,7 @@ function OfferCard({offer}:Props):JSX.Element{
         </div>
         <h2
           className="place-card__name"
-          onClick={changeOnClick}
+          // onClick={changeOnClick}
         >
           <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
