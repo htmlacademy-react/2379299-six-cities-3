@@ -46,7 +46,8 @@ function MainPage({countOffers, cities, offers}:Props): JSX.Element{
               </ul>
             </form>
             <div className="cities__places-list places__list tabs__content">
-              {currentOffers.map((offer) => <OfferCard key={offer.id} offer={offer}/>)}
+              {currentOffers.map((offer) =>
+                <OfferCard key={offer.id} offer={offer} onActiveOffer={(isActiveOffer) => {console.log(2222222222222, isActiveOffer)}}/>)}
             </div>
           </section>
           <div className="cities__right-section">

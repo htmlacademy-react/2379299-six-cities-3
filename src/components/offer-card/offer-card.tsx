@@ -4,29 +4,32 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   offer: Offer;
+  onActiveOffer:(isActiveOffer: string) => void;
 }
 
 
-function OfferCard({offer}:Props):JSX.Element{
-  const [activeOffer, setActiveOffer] = useState(false);
+function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
+
+  const [activeOffer, setActiveOffer] = useState<string>('');
   const {title, price, type, previewImage} = offer;
-  function changeMouseOver(){
-    setActiveOffer(true);
+  function changeMouseEnter(){
+    setActiveOffer(offer.id);
+    onActiveOffer(activeOffer);
   }
-  function changeMouseOut(){
-    setActiveOffer(false);
-  }
-
-  function changeOnClick(){
-    setActiveOffer(false);
+  function changeMouseLeave(){
+    setActiveOffer('');
   }
 
+  // function changeOnClick(){
+  //   setActiveOffer(false);
+  // }
 
+console.log(111111, activeOffer)
   return(
     <article
       className="cities__card place-card"
-      onMouseOver = {changeMouseOver}
-      onMouseOut = {changeMouseOut}
+      onMouseEnter = {changeMouseEnter}
+      onMouseLeave = {changeMouseLeave}
 
     >
       <div className="place-card__mark">
@@ -58,7 +61,7 @@ function OfferCard({offer}:Props):JSX.Element{
         </div>
         <h2
           className="place-card__name"
-          onClick={changeOnClick}
+          // onClick={changeOnClick}
         >
           <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>
