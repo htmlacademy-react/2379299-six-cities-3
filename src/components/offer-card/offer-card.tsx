@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
@@ -7,29 +7,27 @@ type Props = {
   onActiveOffer:(isActiveOffer: string) => void;
 }
 
-
 function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
   const [activeOffer, setActiveOffer] = useState<string>('');
   const {title, price, type, previewImage} = offer;
-  function changeMouseEnter(){
+  function hendleMouseEnter(){
     setActiveOffer(offer.id);
-    onActiveOffer(activeOffer);
+
   }
-  function changeMouseLeave(){
+  function hendleMouseLeave(){
     setActiveOffer('');
   }
 
-  // function changeOnClick(){
-  //   setActiveOffer(false);
-  // }
+  useEffect(() => {
+    onActiveOffer(activeOffer);
+  }, [activeOffer, onActiveOffer]);
 
-console.log(111111, activeOffer)
   return(
     <article
       className="cities__card place-card"
-      onMouseEnter = {changeMouseEnter}
-      onMouseLeave = {changeMouseLeave}
+      onMouseEnter = {hendleMouseEnter}
+      onMouseLeave = {hendleMouseLeave}
 
     >
       <div className="place-card__mark">

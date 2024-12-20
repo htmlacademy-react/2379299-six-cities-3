@@ -1,19 +1,19 @@
 import OfferCard from '../../components/offer-card/offer-card.tsx';
-import { Offers } from '../../types/offer.ts';
 import Map from '../../components/map/map.tsx';
 import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
+import { useState } from 'react';
 
 type Props = {
-  countOffers: number;
-  offers: Offers;
   cities: string[];
 }
 
-function MainPage({countOffers, cities, offers}:Props): JSX.Element{
+function MainPage({cities}:Props): JSX.Element{
   const allOffers = useAppSelector((state) =>state.offers);
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
+
+  const [activeOffer, setActiveOffer] = useState<string>('');
 
   return(
     <main className="page__main page__main--index">
@@ -29,7 +29,7 @@ function MainPage({countOffers, cities, offers}:Props): JSX.Element{
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{countOffers} places to stay in Amsterdam</b>
+            <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -47,11 +47,11 @@ function MainPage({countOffers, cities, offers}:Props): JSX.Element{
             </form>
             <div className="cities__places-list places__list tabs__content">
               {currentOffers.map((offer) =>
-                <OfferCard key={offer.id} offer={offer} onActiveOffer={(isActiveOffer) => {console.log(2222222222222, isActiveOffer)}}/>)}
+                <OfferCard key={offer.id} offer={offer} onActiveOffer={(isActiveOffer) => setActiveOffer(isActiveOffer)}/>)}
             </div>
           </section>
           <div className="cities__right-section">
-            <Map offers = {offers}/>
+            <Map currentOffers = {currentOffers} activeOffer={activeOffer}/>
           </div>
         </div>
       </div>
