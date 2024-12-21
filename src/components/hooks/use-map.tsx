@@ -15,6 +15,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
         },
         zoom: offers[0].city.location.zoom,
       });
+      // leaflet.clearLayers();
 
       leaflet
         .tileLayer(
