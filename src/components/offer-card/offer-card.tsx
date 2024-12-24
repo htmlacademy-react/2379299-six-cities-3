@@ -10,7 +10,8 @@ type Props = {
 function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
   const [activeOffer, setActiveOffer] = useState<string>('');
-  const {title, price, type, previewImage} = offer;
+  const {title, price, type, previewImage, rating} = offer;
+  const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
     setActiveOffer(offer.id);
 
@@ -53,7 +54,7 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '80%'}}></span>
+            <span style={{width: `${ratingOffer * 20}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
