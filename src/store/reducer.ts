@@ -1,10 +1,20 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity } from './action';
-import { offers } from '../ mocks/offers';
+import { changeCurrentCity, loadOffers, requireAuthorization } from './action';
+// import { offers } from '../ mocks/offers';
+import { AuthorizationStatus } from '../components/const';
+import { Offers } from '../types/offer';
 
-const initialState = {
+
+type InitialState = {
+  currentCity: string;
+  offers: Offers;
+  authorizationStatus: AuthorizationStatus;
+};
+
+const initialState: InitialState = {
   currentCity: 'Paris',
-  offers: offers
+  offers: [],
+  authorizationStatus: AuthorizationStatus.Unknown
 };
 
 
@@ -13,8 +23,13 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(changeCurrentCity,(state, action) => {
       const{currentCity} = action.payload;
       state.currentCity = currentCity;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 
-// почему здесь импорт в конце, а везде сразу
 export {reducer};
