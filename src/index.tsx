@@ -6,6 +6,7 @@ import { reviews } from './ mocks/reviews';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { cities } from './ mocks/const';
+import ErrorMessage from './components/error-message/error-message';
 
 
 const root = ReactDOM.createRoot(
@@ -22,6 +23,7 @@ export const Props = {
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ErrorMessage />
       <App countOffers = {Props.countOffers} cities = {Props.cities} offers = {Props.offers} reviews = {Props.reviews}/>
     </Provider>
   </React.StrictMode>

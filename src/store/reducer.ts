@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity, loadOffers, requireAuthorization } from './action';
+import { changeCurrentCity, loadOffers, requireAuthorization, setError } from './action';
 // import { offers } from '../ mocks/offers';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
@@ -9,12 +9,14 @@ type InitialState = {
   currentCity: string;
   offers: Offers;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 };
 
 const initialState: InitialState = {
   currentCity: 'Paris',
   offers: [],
-  authorizationStatus: AuthorizationStatus.Unknown
+  authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
 };
 
 
@@ -29,7 +31,12 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
+
 });
+
 
 export {reducer};

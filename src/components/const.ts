@@ -20,3 +20,4 @@ export enum APIRoute{
 export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const SortType = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
+export const TIMEOUT_SHOW_ERROR = 2000;
