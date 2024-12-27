@@ -7,6 +7,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
   const isRenderedRef = useRef(false);
 
   useEffect(() => {
+    console.log()
     if (mapRef.current !== null && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {
         center: {

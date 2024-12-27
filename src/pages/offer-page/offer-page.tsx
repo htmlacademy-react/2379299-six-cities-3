@@ -4,6 +4,7 @@ import ReviewsItem from './reviews-item';
 import Map from '../../components/map/map';
 import { Offer } from '../../types/offer';
 import OfferCard from '../../components/offer-card/offer-card';
+import { useAppSelector } from '../../hooks';
 
 type Props = {
   reviews: Review[];
@@ -12,8 +13,11 @@ type Props = {
 }
 
 function OfferPage({reviews, offers}:Props):JSX.Element{
+  const allOffers = useAppSelector((state) =>state.offers);
+  const currentCity = useAppSelector((state) =>state.currentCity);
+  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
 
-  const offersNearby = offers.slice(0,3);
+  const offersNearby = currentOffers.slice(0,3);
 
   return(
     <main className="page__main page__main--offer">
@@ -145,7 +149,7 @@ function OfferPage({reviews, offers}:Props):JSX.Element{
           </div>
         </div>
         <section>
-          <Map offers={offersNearby} />
+          <Map currentOffers={offersNearby} />
         </section>
       </section>
       <div className="container">

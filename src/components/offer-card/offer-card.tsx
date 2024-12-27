@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 type Props = {
   offer: Offer;
-  onActiveOffer:(isActiveOffer: string) => void;
+  onActiveOffer?:(isActiveOffer: string) => void;
 }
 
 function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
@@ -21,8 +21,10 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
   }
 
   useEffect(() => {
-    onActiveOffer(activeOffer);
-  }, [activeOffer, onActiveOffer]);
+    if(onActiveOffer){
+      onActiveOffer(activeOffer);
+    }
+  }, [activeOffer]);
 
   return(
     <article

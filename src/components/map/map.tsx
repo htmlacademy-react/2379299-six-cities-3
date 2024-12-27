@@ -7,7 +7,7 @@ import { Offers } from '../../types/offer';
 
 type Props = {
   currentOffers: Offers;
-  activeOffer: string;
+  activeOffer?: string;
 }
 
 function Map({currentOffers, activeOffer}: Props) {
