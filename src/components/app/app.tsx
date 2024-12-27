@@ -9,16 +9,25 @@ import Layout from '../layout/layout';
 import PrivateRoute from '../private-route/private-route';
 import { Offers } from '../../types/offer';
 import { Review } from '../../types/reviews';
+import { useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 type Props = {
-  countOffers: number;
   offers: Offers;
   reviews: Review[];
   cities: string[];
-
 }
 
-function App({countOffers, offers, cities, reviews}:Props): JSX.Element{
+function App({ offers, cities, reviews}:Props): JSX.Element{
+
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isQuestionsDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  if (authorizationStatus === AuthorizationStatus.Unknown || isQuestionsDataLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
   return(
     <BrowserRouter>
       <Routes>
@@ -26,7 +35,7 @@ function App({countOffers, offers, cities, reviews}:Props): JSX.Element{
           <Route
             index
             path = {AppRoute.Main}
-            element = {<MainPage countOffers={countOffers} cities={cities} offers={offers}/>}
+            element = {<MainPage cities={cities} />}
           />
           <Route
             path = {AppRoute.Login}

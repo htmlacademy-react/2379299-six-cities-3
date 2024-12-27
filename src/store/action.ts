@@ -7,3 +7,4 @@ export const changeCurrentOffers = createAction('cities/currentOffers');
 export const loadOffers = createAction<Offers>('cities/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string | null>('game/setError');
+export const setOffersDataLoadingStatus = createAction<boolean>('cities/setOffersDataLoadingStatus');
