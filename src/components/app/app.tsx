@@ -31,7 +31,7 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />} >
+        <Route path="/" element={<Layout authorizationStatus={authorizationStatus}/>} >
           <Route
             index
             path = {AppRoute.Main}
@@ -48,7 +48,7 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
           <Route
             path = {AppRoute.Offer}
             element = {
-              <PrivateRoute authorizationStatus={AuthorizationStatus.Auth}>
+              <PrivateRoute authorizationStatus={authorizationStatus}>
                 <OfferPage reviews = {reviews} offers={offers}/>
               </PrivateRoute>
             }
