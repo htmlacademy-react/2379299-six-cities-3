@@ -11,6 +11,8 @@ import { Offers } from '../../types/offer';
 import { Review } from '../../types/reviews';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import browserHistory from '../../browser-history';
+import HistoryRouter from '../history-route/history-route';
 
 type Props = {
   offers: Offers;
@@ -29,7 +31,7 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
   }
 
   return(
-    <BrowserRouter>
+    <HistoryRouter history={browserHistory}>
       <Routes>
         <Route path="/" element={<Layout authorizationStatus={authorizationStatus}/>} >
           <Route
@@ -59,7 +61,7 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
           />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
   );
 }
 

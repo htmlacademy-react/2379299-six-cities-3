@@ -17,14 +17,19 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
   }
   function hendleMouseLeave(){
+
     setActiveOffer('');
   }
 
   useEffect(() => {
-    if(onActiveOffer){
+    if(onActiveOffer && activeOffer){
+      console.log(111111, activeOffer)
       onActiveOffer(activeOffer);
+
     }
+
   }, [activeOffer]);
+
 
   return(
     <article
