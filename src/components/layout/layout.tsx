@@ -1,11 +1,19 @@
 import { Link, Outlet } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
+import { useAppDispatch } from '../../hooks';
+import { logoutAction } from '../../store/api-avtion';
 
 type Props = {
   authorizationStatus: AuthorizationStatus;
 }
 
 function Layout({authorizationStatus}: Props):JSX.Element{
+
+  const dispatch = useAppDispatch();
+  const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
 
   return(
     <div className="page page--gray page--main">
@@ -30,11 +38,32 @@ function Layout({authorizationStatus}: Props):JSX.Element{
                       </Link>
                     </li>
                   ) : null}
-                <li className="header__nav-item">
-                  <Link className="header__nav-link" to={AppRoute.Login}>
-                    <span className="header__signout">{authorizationStatus === AuthorizationStatus.NoAuth ? 'Sign in' : 'Sign out'}</span>
-                  </Link>
-                </li>
+
+                {
+                  authorizationStatus === AuthorizationStatus.NoAuth ?
+                    <li className="header__nav-item">
+                      <Link className="header__nav-link" to={AppRoute.Login}>
+                        <span className="header__signout">Sign in</span>
+                      </Link>
+                    </li>
+                    : null
+                }
+                {
+                  authorizationStatus === AuthorizationStatus.Auth ?
+                    <li className="header__nav-item">
+                      <Link
+                        className="header__nav-link"
+                        onClick={handlerClick}
+                        to={AppRoute.Login}
+                      >
+                        <span
+                          className="header__signout"
+                        >Sign out
+                        </span>
+                      </Link>
+                    </li>
+                    : null
+                }
               </ul>
             </nav>
           </div>
