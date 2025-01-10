@@ -11,8 +11,6 @@ import { Offers } from '../../types/offer';
 import { Review } from '../../types/reviews';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import browserHistory from '../../browser-history';
-import HistoryRouter from '../history-route/history-route';
 
 type Props = {
   offers: Offers;
@@ -29,9 +27,9 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
       <LoadingScreen />
     );
   }
-
+console.log(4444444444444, authorizationStatus)
   return(
-    <HistoryRouter history={browserHistory}>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout authorizationStatus={authorizationStatus}/>} >
           <Route
@@ -41,7 +39,14 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
           />
           <Route
             path = {AppRoute.Login}
-            element = {<Login />}
+            element = {
+              <PrivateRoute
+                authorizationStatus={authorizationStatus}
+                isReverse
+              >
+                <Login />
+              </PrivateRoute>
+            }
           />
           <Route
             path = {AppRoute.Favorites}
@@ -61,7 +66,7 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
           />
         </Route>
       </Routes>
-    </HistoryRouter>
+    </BrowserRouter>
   );
 }
 
