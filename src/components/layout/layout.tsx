@@ -54,7 +54,7 @@ function Layout({authorizationStatus}: Props):JSX.Element{
                       <Link
                         className="header__nav-link"
                         onClick={handlerClick}
-                        to={AppRoute.Login}
+                        to="#"
                       >
                         <span
                           className="header__signout"

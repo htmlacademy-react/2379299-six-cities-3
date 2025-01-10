@@ -9,6 +9,8 @@ import { cities } from './ mocks/const';
 import ErrorMessage from './components/error-message/error-message';
 import { checkAuthAction, fetchQuestionAction } from './store/api-avtion';
 
+// import{ToastContainer} from  'react-toastify'
+
 store.dispatch(fetchQuestionAction());
 store.dispatch(checkAuthAction());
 

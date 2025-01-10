@@ -27,7 +27,6 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
       <LoadingScreen />
     );
   }
-console.log(4444444444444, authorizationStatus)
   return(
     <BrowserRouter>
       <Routes>
