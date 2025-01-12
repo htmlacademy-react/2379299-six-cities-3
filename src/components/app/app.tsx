@@ -27,10 +27,11 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
       <LoadingScreen />
     );
   }
+
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout authorizationStatus={authorizationStatus}/>} >
+        <Route path="/" element={<Layout/>} >
           <Route
             index
             path = {AppRoute.Main}

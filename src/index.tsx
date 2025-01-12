@@ -7,17 +7,17 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import { cities } from './ mocks/const';
 import ErrorMessage from './components/error-message/error-message';
-import { checkAuthAction, fetchQuestionAction } from './store/api-avtion';
+import { checkAuthAction, fetchOffersAction } from './store/api-action';
 
 // import{ToastContainer} from  'react-toastify'
 
-store.dispatch(fetchQuestionAction());
+store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
-
+console.log(111,offers)
 export const Props = {
   offers: offers,
   reviews: reviews,

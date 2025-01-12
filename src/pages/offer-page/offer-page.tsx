@@ -5,19 +5,31 @@ import Map from '../../components/map/map';
 import { Offer } from '../../types/offer';
 import OfferCard from '../../components/offer-card/offer-card';
 import { useAppSelector } from '../../hooks';
+import { fetchOfferAction } from '../../store/api-action';
 
 type Props = {
   reviews: Review[];
   offers: Offer[];
-
 }
 
 function OfferPage({reviews, offers}:Props):JSX.Element{
-  const allOffers = useAppSelector((state) =>state.offers);
-  const currentCity = useAppSelector((state) =>state.currentCity);
-  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
 
+  const currentUrl = window.location.href ;
+  const currentIdUrl = currentUrl.split('/').pop();
+  if(currentIdUrl){
+    fetchOfferAction(currentIdUrl);
+  }
+
+
+  const currentOffer = useAppSelector((state) => state.offer);
+  const allOffers = useAppSelector((state) => state.offers);
+  const currentCity = useAppSelector((state) => state.currentCity);
+  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
   const offersNearby = currentOffers.slice(0,3);
+
+  const {id, title, rating} = currentOffer;
+
+
 
   return(
     <main className="page__main page__main--offer">
@@ -51,7 +63,7 @@ function OfferPage({reviews, offers}:Props):JSX.Element{
             </div>
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
-                Beautiful &amp; luxurious studio at great location
+                {title}
               </h1>
               <button className="offer__bookmark-button button" type="button">
                 <svg className="offer__bookmark-icon" width="31" height="33">
