@@ -1,12 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Offers } from '../../types/offer';
 import FavoritCard from '../../components/favorit-card/favorit-card';
 
-type Props = {
-  offers: Offers;
-}
-
-function FavoritesPage({offers}:Props):JSX.Element{
+function FavoritesPage():JSX.Element{
 
   return(
     <main className="page__main page__main--favorites">
@@ -23,7 +18,7 @@ function FavoritesPage({offers}:Props):JSX.Element{
                 </div>
               </div>
               <div className="favorites__places">
-                {offers.map((offer) => <FavoritCard key={offer.id} offer={offer}/>)}
+                {/* {offers.map((offer) => <FavoritCard key={offer.id} offer={offer}/>)} */}
                 <article className="favorites__card place-card">
                   <div className="favorites__image-wrapper place-card__image-wrapper">
                     <Link to="#">

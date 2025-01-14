@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
-import { store } from '../../store';
-import { fetchOfferAction } from '../../store/api-action';
+
 
 type Props = {
   offer: Offer;
@@ -10,10 +9,9 @@ type Props = {
 }
 
 function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
-  store.dispatch(fetchOfferAction(offer.id));
 
   const [activeOffer, setActiveOffer] = useState<string>('');
-  const {title, price, type, previewImage, rating} = offer;
+  const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
     setActiveOffer(offer.id);
@@ -38,9 +36,13 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
       onMouseEnter = {hendleMouseEnter}
       onMouseLeave = {hendleMouseLeave}
     >
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+      {
+        isPremium ?
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div> : null
+      }
+
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />

@@ -1,27 +1,17 @@
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
-import { useEffect } from 'react';
-
 
 function Layout():JSX.Element{
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
-    console.log(111)
+
     evt.preventDefault();
-    console.log("до выхода", authorizationStatus)
     dispatch(logoutAction());
-    console.log("после выхода", authorizationStatus)
   };
-  // useEffect(() => {
-  //   if (authorizationStatus === AuthorizationStatus.NoAuth) {
-  //     navigate(AppRoute.Login);
-  //   }
-  // });
-  console.log(5555, authorizationStatus)
+
   return(
     <div className="page page--gray page--main">
       <header className="header">
