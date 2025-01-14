@@ -13,7 +13,7 @@ function MainPage(): JSX.Element{
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
-
+  const [isShow, setIsShow] = useState<boolean>(true);
   switch (activeSort) {
     case 'Price: low to high':
       currentOffers.sort((a, b) => a.price - b.price);
@@ -49,13 +49,22 @@ function MainPage(): JSX.Element{
             <b className="places__found">{currentOffers.length} places to stay in {currentCity}</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
-              <span className="places__sorting-type" tabIndex={0}>
+              <span
+                className="places__sorting-type"
+                tabIndex={0}
+                onClick={() => {
+                  setIsShow(true);
+                }}
+              >
                 {activeSort}
                 <svg className="places__sorting-arrow" width="7" height="4">
                   <use href="#icon-arrow-select"></use>
                 </svg>
               </span>
-              <SortOffers setActiveSort={setActiveSort} />
+              {
+                isShow ? <SortOffers setActiveSort={setActiveSort} setIsShow={setIsShow}/> : null
+              }
+
             </form>
             <div className="cities__places-list places__list tabs__content">
               {currentOffers.map((offer) =>
