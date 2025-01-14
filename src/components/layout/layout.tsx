@@ -1,16 +1,13 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
-import { useAppDispatch } from '../../hooks';
-import { logoutAction } from '../../store/api-avtion';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { logoutAction } from '../../store/api-action';
 
-type Props = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function Layout({authorizationStatus}: Props):JSX.Element{
-
+function Layout():JSX.Element{
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
   const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
+
     evt.preventDefault();
     dispatch(logoutAction());
   };
@@ -53,8 +50,9 @@ function Layout({authorizationStatus}: Props):JSX.Element{
                     <li className="header__nav-item">
                       <Link
                         className="header__nav-link"
+                        to={AppRoute.Login}
                         onClick={handlerClick}
-                        to="#"
+
                       >
                         <span
                           className="header__signout"

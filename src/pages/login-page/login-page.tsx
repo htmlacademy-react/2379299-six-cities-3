@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
-import { loginAction } from '../../store/api-avtion';
+import { loginAction } from '../../store/api-action';
 import { useAppDispatch } from '../../hooks';
 
 function LoginPage():JSX.Element{
