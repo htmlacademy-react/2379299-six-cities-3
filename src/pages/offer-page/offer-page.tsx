@@ -43,7 +43,6 @@ function OfferPage():JSX.Element{
   const {title,isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
 
   const ratingOffer = Math.round(rating);
-console.log(33333333333333,title)
   return(
     <main className="page__main page__main--offer">
       <section className="offer">
