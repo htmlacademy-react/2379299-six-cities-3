@@ -1,20 +1,67 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity } from './action';
-import { offers } from '../ mocks/offers';
+import { changeCurrentCity, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { AuthorizationStatus } from '../components/const';
+import { Offers } from '../types/offer';
+import { FullOffer } from '../types/full-offer';
+import { Reviews } from '../types/reviews';
 
-const initialState = {
+
+type InitialState = {
+  currentCity: string;
+  offers: Offers;
+  offer: FullOffer | null;
+  reviews: Reviews[] ;
+  nearbyOffers: Offers;
+  authorizationStatus: AuthorizationStatus;
+  error: string | null;
+  isOffersDataLoading: boolean;
+  isOfferDataLoading: boolean;
+};
+
+const initialState: InitialState = {
   currentCity: 'Paris',
-  offers: offers
+  offers: [],
+  offer: null,
+  reviews: [],
+  nearbyOffers: [],
+  authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
+  isOffersDataLoading: false,
+  isOfferDataLoading: false
 };
 
 
 const reducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(loadOffer,(state, action) => {
+      state.offer = action.payload;
+    })
     .addCase(changeCurrentCity,(state, action) => {
       const{currentCity} = action.payload;
       state.currentCity = currentCity;
+    })
+    .addCase(loadOffers, (state, action) => {
+      state.offers = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
+    })
+    .addCase(setOfferDataLoadingStatus, (state, action) => {
+      state.isOfferDataLoading = action.payload;
+    })
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload;
+    })
+    .addCase(loadNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
     });
 });
 
-// почему здесь импорт в конце, а везде сразу
+
 export {reducer};
