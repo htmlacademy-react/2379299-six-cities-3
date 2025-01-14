@@ -6,6 +6,19 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
 
+
+  useEffect(()=> {
+    if (map !== null && offers.length){
+      map.setView({
+        lat: offers[0].city.location.latitude,
+        lng: offers[0].city.location.longitude,
+
+      },offers[0].city.location.zoom
+      );
+    }
+  }, [offers?.[0].city]);
+
+
   useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {

@@ -1,7 +1,20 @@
 import { Link, Outlet } from 'react-router-dom';
-import { AppRoute } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
+import { useAppDispatch } from '../../hooks';
+import { logoutAction } from '../../store/api-avtion';
 
-function Layout():JSX.Element{
+type Props = {
+  authorizationStatus: AuthorizationStatus;
+}
+
+function Layout({authorizationStatus}: Props):JSX.Element{
+
+  const dispatch = useAppDispatch();
+  const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+    dispatch(logoutAction());
+  };
+
   return(
     <div className="page page--gray page--main">
       <header className="header">
@@ -14,19 +27,43 @@ function Layout():JSX.Element{
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <Link className="header__nav-link header__nav-link--profile" to="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </Link>
-                </li>
-                <li className="header__nav-item">
-                  <Link className="header__nav-link" to={AppRoute.Login}>
-                    <span className="header__signout">Sign out</span>
-                  </Link>
-                </li>
+                {authorizationStatus === AuthorizationStatus.Auth ?
+                  (
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to="#">
+                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                        </div>
+                        <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+                        <span className="header__favorite-count">3</span>
+                      </Link>
+                    </li>
+                  ) : null}
+
+                {
+                  authorizationStatus === AuthorizationStatus.NoAuth ?
+                    <li className="header__nav-item">
+                      <Link className="header__nav-link" to={AppRoute.Login}>
+                        <span className="header__signout">Sign in</span>
+                      </Link>
+                    </li>
+                    : null
+                }
+                {
+                  authorizationStatus === AuthorizationStatus.Auth ?
+                    <li className="header__nav-item">
+                      <Link
+                        className="header__nav-link"
+                        onClick={handlerClick}
+                        to="#"
+                      >
+                        <span
+                          className="header__signout"
+                        >Sign out
+                        </span>
+                      </Link>
+                    </li>
+                    : null
+                }
               </ul>
             </nav>
           </div>

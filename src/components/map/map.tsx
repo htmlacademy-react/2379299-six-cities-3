@@ -7,13 +7,12 @@ import { Offers } from '../../types/offer';
 
 type Props = {
   currentOffers: Offers;
-  activeOffer: string;
+  activeOffer?: string;
 }
 
 function Map({currentOffers, activeOffer}: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, currentOffers);
-
   const defaultCustomIcon = leaflet.icon({
     iconUrl: URL_MARKER_DEFAULT,
     iconSize: [27, 39],
