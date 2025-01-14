@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { changeCurrentCity, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { changeCurrentCity, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
@@ -16,6 +16,7 @@ type InitialState = {
   error: string | null;
   isOffersDataLoading: boolean;
   isOfferDataLoading: boolean;
+  isNearbyOfferDataLoading: boolean;
 };
 
 const initialState: InitialState = {
@@ -27,7 +28,8 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isOffersDataLoading: false,
-  isOfferDataLoading: false
+  isOfferDataLoading: true,
+  isNearbyOfferDataLoading: true
 };
 
 
@@ -60,7 +62,11 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
+    })
+    .addCase(setNearbyOfferDataLoadingStatus, (state, action) => {
+      state.isNearbyOfferDataLoading = action.payload;
     });
+
 });
 
 

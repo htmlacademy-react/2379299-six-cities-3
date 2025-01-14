@@ -27,20 +27,23 @@ function OfferPage():JSX.Element{
   },[prodId, dispatch]);
 
   const loadingStatus = useAppSelector((state) => state.isOfferDataLoading);
+  const loadingStatusNearby = useAppSelector((state) => state.isNearbyOfferDataLoading);
   const currentOffer = useAppSelector((state) => state.offer);
   const reviews = useAppSelector((state) => state.reviews);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
-  if (loadingStatus){
+
+  if (loadingStatus || loadingStatusNearby || !currentOffer){
     return <LoadingScreen />;
   }
+
   if(!currentOffer){
     return <Navigate replace to="/not-found-page" />;
-
   }
+
   const {title,isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
 
   const ratingOffer = Math.round(rating);
-
+console.log(33333333333333,title)
   return(
     <main className="page__main page__main--offer">
       <section className="offer">

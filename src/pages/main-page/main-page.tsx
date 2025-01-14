@@ -11,7 +11,6 @@ function MainPage(): JSX.Element{
   const allOffers = useAppSelector((state) =>state.offers);
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
-console.log(33333333,allOffers)
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
 
