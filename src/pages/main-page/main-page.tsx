@@ -68,7 +68,7 @@ function MainPage(): JSX.Element{
             </form>
             <div className="cities__places-list places__list tabs__content">
               {currentOffers.map((offer) =>
-                <OfferCard key={offer.id} offer={offer} onActiveOffer={(isActiveOffer) => setActiveOffer(isActiveOffer)}/>)}
+                <OfferCard key={offer.id} offer={offer} setActiveOffer={setActiveOffer}/>)}
             </div>
           </section>
           <div className="cities__right-section">

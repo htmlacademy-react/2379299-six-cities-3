@@ -1,16 +1,15 @@
-import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
 
 type Props = {
   offer: Offer;
-  onActiveOffer?:(isActiveOffer: string) => void;
+  setActiveOffer:(isActiveOffer: string) => void;
 }
 
-function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
+function OfferCard({offer, setActiveOffer}:Props):JSX.Element{
 
-  const [activeOffer, setActiveOffer] = useState<string>('');
+
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
@@ -21,14 +20,6 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
     setActiveOffer('');
   }
-
-  useEffect(() => {
-    if(onActiveOffer && activeOffer){
-      onActiveOffer(activeOffer);
-    }
-
-  }, [activeOffer]);
-
 
   return(
     <article
