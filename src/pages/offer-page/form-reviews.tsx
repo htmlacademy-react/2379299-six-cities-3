@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-function FormReviews():JSX.Element{
+function FormReviewsRew():JSX.Element{
 
   const [dataReviews, setDataReviews] = useState<string>('');
 
@@ -70,5 +70,5 @@ function FormReviews():JSX.Element{
     </form>
   );
 }
-
+const FormReviews = memo(FormReviewsRew);
 export default FormReviews;

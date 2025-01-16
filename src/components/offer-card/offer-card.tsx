@@ -1,24 +1,25 @@
+import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
 
 type Props = {
   offer: Offer;
-  setActiveOffer:(isActiveOffer: string) => void;
+  setActiveOffer?:(isActiveOffer: string) => void;
 }
 
-function OfferCard({offer, setActiveOffer}:Props):JSX.Element{
+function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
 
 
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
-    setActiveOffer(offer.id);
+    setActiveOffer!(offer.id);
 
   }
   function hendleMouseLeave(){
 
-    setActiveOffer('');
+    setActiveOffer!('');
   }
 
   return(
@@ -68,6 +69,6 @@ function OfferCard({offer, setActiveOffer}:Props):JSX.Element{
     </article>
   );
 }
-
+const OfferCard = memo(OfferCardRew);
 export default OfferCard;
 

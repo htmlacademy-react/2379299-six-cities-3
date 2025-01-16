@@ -1,13 +1,15 @@
+import { memo } from 'react';
+
 type Props={
   good:string;
 }
 
-function Goods({good}:Props):JSX.Element {
+function GoodsRew({good}:Props):JSX.Element {
   return(
     <li className="offer__inside-item">
       {good}
     </li>
   );
 }
-
+const Goods = memo(GoodsRew);
 export default Goods;

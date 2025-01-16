@@ -1,4 +1,5 @@
 
+import { memo } from 'react';
 import { SortType } from '../../components/const';
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 }
 
 
-function SortOffers({setActiveSort, setIsShow}: Props):JSX.Element{
+function SortOffersRew({setActiveSort, setIsShow}: Props):JSX.Element{
 
   return(
     <ul className="places__options places__options--custom places__options--opened">
@@ -26,5 +27,5 @@ function SortOffers({setActiveSort, setIsShow}: Props):JSX.Element{
     </ul>
   );
 }
-
+const SortOffers = memo(SortOffersRew);
 export default SortOffers;

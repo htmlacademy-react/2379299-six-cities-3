@@ -2,8 +2,9 @@ import { Link, Outlet} from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
+import { memo } from 'react';
 
-function Layout():JSX.Element{
+function LayoutRew():JSX.Element{
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const dispatch = useAppDispatch();
   const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
@@ -76,5 +77,5 @@ function Layout():JSX.Element{
     </div>
   );
 }
-
+const Layout = memo(LayoutRew);
 export default Layout;

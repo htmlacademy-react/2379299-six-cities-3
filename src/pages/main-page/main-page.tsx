@@ -13,7 +13,7 @@ function MainPage(): JSX.Element{
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isShow, setIsShow] = useState<boolean>(false);
   switch (activeSort) {
     case 'Price: low to high':
       currentOffers.sort((a, b) => a.price - b.price);
@@ -53,7 +53,7 @@ function MainPage(): JSX.Element{
                 className="places__sorting-type"
                 tabIndex={0}
                 onClick={() => {
-                  setIsShow(true);
+                  setIsShow(!isShow);
                 }}
               >
                 {activeSort}
