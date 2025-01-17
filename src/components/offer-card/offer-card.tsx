@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
+
 type Props = {
   offer: Offer;
   onActiveOffer?:(isActiveOffer: string) => void;
@@ -10,7 +11,7 @@ type Props = {
 function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
   const [activeOffer, setActiveOffer] = useState<string>('');
-  const {title, price, type, previewImage, rating} = offer;
+  const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
     setActiveOffer(offer.id);
@@ -23,9 +24,7 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
 
   useEffect(() => {
     if(onActiveOffer && activeOffer){
-      console.log(111111, activeOffer)
       onActiveOffer(activeOffer);
-
     }
 
   }, [activeOffer]);
@@ -36,15 +35,18 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
       className="cities__card place-card"
       onMouseEnter = {hendleMouseEnter}
       onMouseLeave = {hendleMouseLeave}
-
     >
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+      {
+        isPremium ?
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div> : null
+      }
+
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
+        <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
-        </a>
+        </Link>
       </div>
       <div className="place-card__info">
         <div className="place-card__price-wrapper">
@@ -67,7 +69,6 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
         </div>
         <h2
           className="place-card__name"
-          // onClick={changeOnClick}
         >
           <Link to={`/offer/${offer.id}`}>{title}</Link>
         </h2>

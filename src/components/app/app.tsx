@@ -7,18 +7,10 @@ import { AppRoute, AuthorizationStatus } from '../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import PrivateRoute from '../private-route/private-route';
-import { Offers } from '../../types/offer';
-import { Review } from '../../types/reviews';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
-type Props = {
-  offers: Offers;
-  reviews: Review[];
-  cities: string[];
-}
-
-function App({ offers, cities, reviews}:Props): JSX.Element{
+function App(): JSX.Element{
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isQuestionsDataLoading = useAppSelector((state) => state.isOffersDataLoading);
@@ -27,14 +19,15 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
       <LoadingScreen />
     );
   }
+
   return(
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout authorizationStatus={authorizationStatus}/>} >
+        <Route path="/" element={<Layout/>} >
           <Route
             index
             path = {AppRoute.Main}
-            element = {<MainPage cities={cities} />}
+            element = {<MainPage />}
           />
           <Route
             path = {AppRoute.Login}
@@ -49,13 +42,13 @@ function App({ offers, cities, reviews}:Props): JSX.Element{
           />
           <Route
             path = {AppRoute.Favorites}
-            element = {<Favorites offers={offers}/>}
+            element = {<Favorites />}
           />
           <Route
             path = {AppRoute.Offer}
             element = {
               <PrivateRoute authorizationStatus={authorizationStatus}>
-                <OfferPage reviews = {reviews} offers={offers}/>
+                <OfferPage />
               </PrivateRoute>
             }
           />

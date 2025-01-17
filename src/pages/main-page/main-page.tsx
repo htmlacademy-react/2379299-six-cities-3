@@ -4,16 +4,13 @@ import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
 import { useState } from 'react';
 import SortOffers from './sort-offers.tsx';
+import { cities } from '../../ mocks/const.ts';
 
-type Props = {
-  cities: string[];
-}
 
-function MainPage({cities}:Props): JSX.Element{
+function MainPage(): JSX.Element{
   const allOffers = useAppSelector((state) =>state.offers);
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
-
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
 
