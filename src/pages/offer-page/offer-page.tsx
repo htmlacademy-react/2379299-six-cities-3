@@ -40,7 +40,7 @@ function OfferPage():JSX.Element{
     return <Navigate replace to="/not-found-page" />;
   }
 
-  const {title,isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
+  const {title, id, isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
 
   const ratingOffer = Math.round(rating);
   return(
@@ -122,7 +122,7 @@ function OfferPage():JSX.Element{
               <ul className="reviews__list">
                 {reviews.map((review) => <Review review={review} key={review.id}/>)}
               </ul>
-              <FormComments />
+              <FormComments id={id} />
             </section>
           </div>
         </div>

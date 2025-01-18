@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
 import { Offers } from '../types/offer';
 
@@ -11,6 +11,7 @@ import { store } from '.';
 import { AuthData } from '../types/auth-data ';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
+import { ReviewForSubmit } from '../types/review-for-submit';
 
 export const clearErrorAction = createAsyncThunk(
   'game/clearError',
@@ -81,6 +82,25 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
       dispatch(setNearbyOfferDataLoadingStatus(false));
       dispatch(loadNearbyOffers(data))
     }catch{
+      console.log('error');
+    }
+  },
+);
+
+export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/saveReviews',
+  async ({offerId, comment, rating}, {dispatch, extra: api}) => {
+    try{
+      console.log('saveReviews')
+      const {data} = await api.post<Reviews>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
+      console.log('saveReviews',data);
+      dispatch(addReview(data))
+
+    } catch (error) {
       console.log('error');
     }
 
