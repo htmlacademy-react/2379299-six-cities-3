@@ -15,7 +15,6 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
     setActiveOffer!(offer.id);
-
   }
   function hendleMouseLeave(){
 

@@ -2,7 +2,7 @@ import OfferCard from '../../components/offer-card/offer-card.tsx';
 import Map from '../../components/map/map.tsx';
 import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import SortOffers from './sort-offers.tsx';
 import { cities } from '../../ mocks/const.ts';
 
@@ -14,23 +14,27 @@ function MainPage(): JSX.Element{
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-  switch (activeSort) {
-    case 'Price: low to high':
-      currentOffers.sort((a, b) => a.price - b.price);
-      break;
-    case 'Price: high to low':
-      currentOffers.sort((a, b) => b.price - a.price);
-      break;
-    case 'Top rated first':
-      currentOffers.sort((a, b) => b.rating - a.rating);
-      break;
-    case 'Popular':
-      currentOffers.sort((a, b) => b.price - a.price);
-      break;
+  
+  useMemo(() => {
+    switch (activeSort) {
+      case 'Price: low to high':
+        currentOffers.sort((a, b) => a.price - b.price);
+        break;
+      case 'Price: high to low':
+        currentOffers.sort((a, b) => b.price - a.price);
+        break;
+      case 'Top rated first':
+        currentOffers.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'Popular':
+        currentOffers.sort((a, b) => b.price - a.price);
+        break;
 
-    default:
-      console.log('Sorry');
-  }
+      default:
+        console.log('Sorry');
+    }
+
+  },[activeSort, currentOffers])
 
   return(
     <main className="page__main page__main--index">
