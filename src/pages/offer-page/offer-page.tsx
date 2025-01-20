@@ -1,5 +1,4 @@
 import FormComments from './form-reviews';
-
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearbyOffers, fetchOfferAction, fetchReviews } from '../../store/api-action';
 import { Navigate, useParams } from 'react-router-dom';
@@ -7,9 +6,9 @@ import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferGalleryImage from './offer-gallery-image';
 import Goods from './goods';
-import Review from './review';
 import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
+import ReviewsItem from './reviews-item';
 
 
 function OfferPage():JSX.Element{
@@ -33,8 +32,10 @@ function OfferPage():JSX.Element{
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
 
   if (loadingStatus || loadingStatusNearby || !currentOffer){
+
     return <LoadingScreen />;
   }
+
 
   if(!currentOffer){
     return <Navigate replace to="/not-found-page" />;
@@ -120,7 +121,7 @@ function OfferPage():JSX.Element{
             <section className="offer__reviews reviews">
               <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
               <ul className="reviews__list">
-                {reviews.map((review) => <Review review={review} key={review.id}/>)}
+                {reviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
               </ul>
               <FormComments id={id} />
             </section>

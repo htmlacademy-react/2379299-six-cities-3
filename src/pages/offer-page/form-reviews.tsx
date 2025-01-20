@@ -1,9 +1,8 @@
 import { FormEvent, memo, useState } from 'react';
 import { saveReviews } from '../../store/api-action';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { COUNT_STAR } from '../../ mocks/const';
 import FormForStar from './form-for-star';
-
 
 type Props = {
   id: string;
@@ -12,23 +11,26 @@ function FormReviewsRew({id}: Props):JSX.Element{
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
   const [dataStar, setDataStar] = useState<number>(0);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus)
 
   function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
+    evt.preventDefault();
+    // evt.stopPropagation();
     setDataReviews(evt.target.value);
 
   }
-  function handlerSubmit(evt: FormEvent<HTMLFormElement>){
-    evt.preventDefault();
-    dispatch(saveReviews({
-      offerId: id,
-      comment:dataReviews,
-      rating:dataStar
-    }));
-    evt.currentTarget.reset();
+
+  console.log('dataStar', dataStar)
+  function handlerSubmit(){
+    // evt.preventDefault();
+    // dispatch(saveReviews({
+    //   offerId: id,
+    //   comment:dataReviews,
+    //   rating:dataStar
+    // }));
+    // evt.currentTarget.reset();
   }
-
-
-console.log(dataReviews)
+ console
   return(
     <form
       className="reviews__form form"
@@ -38,7 +40,7 @@ console.log(dataReviews)
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {COUNT_STAR.map((star) => <FormForStar star={star} key={star.value} setDataStar={setDataStar}/>)}
+        {COUNT_STAR.map((star) => <FormForStar dataStar={dataStar} star={star} key={star.value} setDataStar={setDataStar}/>)}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
@@ -55,7 +57,7 @@ console.log(dataReviews)
         <button
           className="reviews__submit form__submit button"
           type="submit"
-
+          disabled = {!authorizationStatus}
         >Submit
         </button>
       </div>

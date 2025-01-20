@@ -1,11 +1,12 @@
 import dayjs from 'dayjs';
-import { Review } from '../../types/reviews';
-type Props = {
-  review: Review;
+import { Reviews } from '../../types/reviews';
+import { memo } from 'react';
+
+type Props={
+  review: Reviews;
 }
 
-
-function ReviewsItem({review}:Props):JSX.Element{
+function ReviewsItemRew({review}:Props):JSX.Element{
 
   const {user, comment, date} = review;
 
@@ -37,4 +38,7 @@ function ReviewsItem({review}:Props):JSX.Element{
     </li>
   );
 }
+
+const ReviewsItem = memo(ReviewsItemRew);
 export default ReviewsItem;
+
