@@ -1,9 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, changeCurrentCity, getUserData, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
+import { UserData } from '../types/user-data';
 
 
 type InitialState = {
@@ -12,6 +13,7 @@ type InitialState = {
   offer: FullOffer | null;
   reviews: Reviews[] ;
   nearbyOffers: Offers;
+  userData : UserData | null;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   isOffersDataLoading: boolean;
@@ -23,6 +25,7 @@ const initialState: InitialState = {
   currentCity: 'Paris',
   offers: [],
   offer: null,
+  userData: null,
   reviews: [],
   nearbyOffers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -50,6 +53,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(getUserData, (state, {payload}) => {
+      state.userData = payload;
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;

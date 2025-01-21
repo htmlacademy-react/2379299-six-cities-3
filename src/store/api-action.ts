@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { addReview, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, getUserData, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
 import { Offers } from '../types/offer';
 
@@ -95,11 +95,8 @@ export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
   'user/saveReviews',
   async ({offerId, comment, rating}, {dispatch, extra: api}) => {
     try{
-      console.log('saveReviews')
       const {data} = await api.post<Reviews>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
-      console.log('saveReviews',data);
       dispatch(addReview(data))
-
     } catch (error) {
       console.log('error');
     }
@@ -131,10 +128,11 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   'user/login',
   async ({email, password}, {dispatch, extra: api}) => {
     try{
-      const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
-      saveToken(token);
+      const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
+      console.log(11111111, data.avatarUrl)
+      dispatch(getUserData(data));
+      saveToken(data.token);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
-
     } catch (error) {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }

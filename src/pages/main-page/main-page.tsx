@@ -14,7 +14,7 @@ function MainPage(): JSX.Element{
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-  
+
   useMemo(() => {
     switch (activeSort) {
       case 'Price: low to high':
@@ -34,7 +34,7 @@ function MainPage(): JSX.Element{
         console.log('Sorry');
     }
 
-  },[activeSort, currentOffers])
+  },[activeSort, currentOffers]);
 
   return(
     <main className="page__main page__main--index">
