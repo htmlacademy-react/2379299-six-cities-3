@@ -1,9 +1,8 @@
-import { Fragment, memo, useMemo, useState } from 'react';
+import { Fragment, memo} from 'react';
 
 type Star = {
   value: number;
   title: string;
-
 }
 
 type Props = {
@@ -14,22 +13,18 @@ type Props = {
 
 function FormForStarRew({star, setDataStar, dataStar}:Props):JSX.Element{
 
-console.log('FormForStarRew', star)
   const handlerClick = (evt:React.MouseEvent<HTMLInputElement>) => {
     evt.preventDefault();
     setDataStar(Number(evt.currentTarget.value));
   };
-
-
-
   return(
-    <Fragment>
+    <Fragment >
       <input className="form__rating-input visually-hidden" name="rating"
         value={star.value}
         id={`${star.value}-stars`}
         type="radio"
         onClick={handlerClick}
-        checked={dataStar === star.value}
+        checked={star.value === dataStar}
       />
       <label
         htmlFor={`${star.value}-stars`}
@@ -46,3 +41,4 @@ console.log('FormForStarRew', star)
 
 const FormForStar = memo(FormForStarRew);
 export default FormForStar;
+

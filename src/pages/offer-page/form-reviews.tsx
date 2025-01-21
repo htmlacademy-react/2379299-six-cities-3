@@ -1,4 +1,4 @@
-import { FormEvent, memo, useState } from 'react';
+import { memo, useState } from 'react';
 import { saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { COUNT_STAR } from '../../ mocks/const';
@@ -11,26 +11,24 @@ function FormReviewsRew({id}: Props):JSX.Element{
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
   const [dataStar, setDataStar] = useState<number>(0);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus)
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
-    // evt.stopPropagation();
     setDataReviews(evt.target.value);
 
   }
 
-  console.log('dataStar', dataStar)
-  function handlerSubmit(){
-    // evt.preventDefault();
-    // dispatch(saveReviews({
-    //   offerId: id,
-    //   comment:dataReviews,
-    //   rating:dataStar
-    // }));
-    // evt.currentTarget.reset();
+  function handlerSubmit(evt:React.FormEvent<HTMLFormElement>){
+    evt.preventDefault();
+    dispatch(saveReviews({
+      offerId: id,
+      comment:dataReviews,
+      rating:dataStar
+    }));
+    evt.currentTarget.reset();
   }
- console
+
   return(
     <form
       className="reviews__form form"
