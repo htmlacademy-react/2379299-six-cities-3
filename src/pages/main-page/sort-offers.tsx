@@ -1,11 +1,14 @@
+
+import { memo } from 'react';
 import { SortType } from '../../components/const';
 
 type Props = {
   setActiveSort: (sort:string) => void;
+  setIsShow: (sort:boolean) => void;
 }
 
 
-function SortOffers({setActiveSort}: Props):JSX.Element{
+function SortOffersRew({setActiveSort, setIsShow}: Props):JSX.Element{
 
   return(
     <ul className="places__options places__options--custom places__options--opened">
@@ -16,6 +19,7 @@ function SortOffers({setActiveSort}: Props):JSX.Element{
           tabIndex={0}
           onClick={() => {
             setActiveSort(sort);
+            setIsShow(false);
           }}
         >{sort}
         </li>
@@ -23,5 +27,5 @@ function SortOffers({setActiveSort}: Props):JSX.Element{
     </ul>
   );
 }
-
+const SortOffers = memo(SortOffersRew);
 export default SortOffers;

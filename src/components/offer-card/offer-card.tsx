@@ -1,34 +1,26 @@
-import { useEffect, useState } from 'react';
+import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 
 
 type Props = {
   offer: Offer;
-  onActiveOffer?:(isActiveOffer: string) => void;
+  setActiveOffer?:(isActiveOffer: string) => void;
 }
 
-function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
+function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
 
-  const [activeOffer, setActiveOffer] = useState<string>('');
+
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
-    setActiveOffer(offer.id);
+    setActiveOffer!(offer.id);
 
   }
   function hendleMouseLeave(){
 
-    setActiveOffer('');
+    setActiveOffer!('');
   }
-
-  useEffect(() => {
-    if(onActiveOffer && activeOffer){
-      onActiveOffer(activeOffer);
-    }
-
-  }, [activeOffer]);
-
 
   return(
     <article
@@ -77,6 +69,6 @@ function OfferCard({offer, onActiveOffer}:Props):JSX.Element{
     </article>
   );
 }
-
+const OfferCard = memo(OfferCardRew);
 export default OfferCard;
 
