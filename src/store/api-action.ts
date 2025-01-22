@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { addReview, getUserData, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, changeOffer, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
-import { Offers } from '../types/offer';
+import { Offer, Offers } from '../types/offer';
 
 import { UserData } from '../types/user-data';
 import { dropToken, saveToken } from '../services/token';
@@ -12,6 +12,7 @@ import { AuthData } from '../types/auth-data ';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
 import { ReviewForSubmit } from '../types/review-for-submit';
+import { StatusFavorite } from '../types/status-favorite';
 
 export const clearErrorAction = createAsyncThunk(
   'game/clearError',
@@ -86,6 +87,58 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
     }
   },
 );
+
+export const fetchFavoriteOffers = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'cities/loadNearbyOffers',
+  async (_arg, {dispatch, extra: api}) => {
+    // dispatch(setNearbyOfferDataLoadingStatus(true));
+    try{
+      const {data} = await api.get<Offers>(`${APIRoute.Favorite}`);
+      // dispatch(setNearbyOfferDataLoadingStatus(false));
+      dispatch(loadFavoriteOffers(data))
+    }catch{
+      console.log('error');
+    }
+  },
+);
+
+export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'user/saveReviews',
+  async ({offerId, status}, {dispatch, extra: api}) => {
+    console.log('до api.post', status)
+    try{
+      const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
+      console.log('после api.post')
+
+      // dispatch(changeOffer({
+      //   id: data.id,
+      //   title: data.title,
+      //   type: data.type,
+      //   price: data.price,
+      //   previewImage: data.previewImage,
+      //   city: data.city,
+      //   location: data.location,
+      //   isFavorite: data.isFavorite,
+      //   isPremium: data.isPremium,
+      //   rating: data.rating
+      // }));
+    } catch (error) {
+      console.log('error');
+    }
+
+  },
+);
+
+
+
 
 export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
   dispatch: AppDispatch;

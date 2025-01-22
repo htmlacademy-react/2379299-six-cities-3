@@ -15,7 +15,8 @@ export enum APIRoute{
   Comments = '/comments',
   Offers = '/offers',
   Login = '/login',
-  Logout = '/logout'
+  Logout = '/logout',
+  Favorite = '/favorite'
 }
 
 export const URL_MARKER_DEFAULT = 'img/pin.svg';

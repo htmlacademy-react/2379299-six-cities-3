@@ -8,12 +8,18 @@ import { cities } from '../../ mocks/const.ts';
 
 
 function MainPage(): JSX.Element{
-  const allOffers = useAppSelector((state) =>state.offers);
+
+
+  const currentFavorites = useAppSelector((state) =>state.favoriteOffers);
+  const allOffers = useAppSelector((state) =>state.offers.map(((offer) =>
+    currentFavorites.find((favorit) => favorit.id === offer.id) ? {...offer, isFavorite: true} : {...offer})));
   const currentCity = useAppSelector((state) =>state.currentCity);
-  const currentOffers = allOffers.filter((offer) => offer.city.name === currentCity);
+  const currentOffers = allOffers .filter((offer) => offer.city.name === currentCity);
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
+  // const fetchFavoriteOfferss = useAppSelector((state) => state.favoriteOffers)
+
 
   useMemo(() => {
     switch (activeSort) {

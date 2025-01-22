@@ -1,7 +1,7 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, getUserData, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { createReducer, current } from '@reduxjs/toolkit';
+import { addReview, changeCurrentCity, changeOffer, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
-import { Offers } from '../types/offer';
+import { Offer, Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
 import { UserData } from '../types/user-data';
@@ -13,6 +13,7 @@ type InitialState = {
   offer: FullOffer | null;
   reviews: Reviews[] ;
   nearbyOffers: Offers;
+  favoriteOffers:Offers;
   userData : UserData | null;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
@@ -28,6 +29,7 @@ const initialState: InitialState = {
   userData: null,
   reviews: [],
   nearbyOffers: [],
+  favoriteOffers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isOffersDataLoading: false,
@@ -72,6 +74,17 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
     })
+    .addCase(loadFavoriteOffers, (state, action) => {
+      state.favoriteOffers = action.payload;
+    })
+    // .addCase(changeOffer, (state, action) => {
+    //   state.offers.map((offer) =>
+    //     offer.id === action.payload.id
+    //       ? { ...offer, isFavorite: action.payload.isFavorite}
+    //       : offer
+    //   );
+    //   console.log(11111)
+    // })
     .addCase(setNearbyOfferDataLoadingStatus, (state, action) => {
       state.isNearbyOfferDataLoading = action.payload;
     });

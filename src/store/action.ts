@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Offers } from '../types/offer';
+import { Offer, Offers } from '../types/offer';
 import { AuthorizationStatus } from '../components/const';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
@@ -13,6 +13,8 @@ export const loadReviews = createAction<Reviews[]>('cities/loadReviews');
 export const addReview = createAction<Reviews>('cities/addReview');
 export const getUserData = createAction<UserData>('getUserData');
 export const loadNearbyOffers = createAction<Offers>('cities/loadNearbyOffers');
+export const loadFavoriteOffers = createAction<Offers>('cities/loadFavoriteOffers');
+export const changeOffer = createAction<Offer>('cities/changeOffer');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 export const setError = createAction<string | null>('game/setError');
 export const setOffersDataLoadingStatus = createAction<boolean>('cities/setOffersDataLoadingStatus');
