@@ -25,7 +25,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
       offerId: id,
       status: Number(!isFavorite),
     }));
-    setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
   };
 
   return(

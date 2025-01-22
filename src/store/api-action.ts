@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { addReview, changeOffer, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
 import { Offer, Offers } from '../types/offer';
 
@@ -52,7 +52,7 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
       dispatch(setOfferDataLoadingStatus(false));
       dispatch(loadOffer(data));
     }catch{
-      console.log('error');
+      dispatch(setError('Failed to load offer data'));
     }
 
   },
@@ -81,9 +81,9 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
     try{
       const {data} = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
       dispatch(setNearbyOfferDataLoadingStatus(false));
-      dispatch(loadNearbyOffers(data))
+      dispatch(loadNearbyOffers(data));
     }catch{
-      console.log('error');
+      dispatch(setError('Failed to load nearby offer data'));
     }
   },
 );
@@ -93,15 +93,13 @@ export const fetchFavoriteOffers = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'cities/loadNearbyOffers',
+  'cities/loadFavoriteOffers',
   async (_arg, {dispatch, extra: api}) => {
-    // dispatch(setNearbyOfferDataLoadingStatus(true));
     try{
       const {data} = await api.get<Offers>(`${APIRoute.Favorite}`);
-      // dispatch(setNearbyOfferDataLoadingStatus(false));
-      dispatch(loadFavoriteOffers(data))
+      dispatch(loadFavoriteOffers(data));
     }catch{
-      console.log('error');
+      dispatch(setError('Failed to load favorite offer data'));
     }
   },
 );
@@ -112,33 +110,15 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
   extra: AxiosInstance;
 }>(
   'user/saveReviews',
-  async ({offerId, status}, {dispatch, extra: api}) => {
-    console.log('до api.post', status)
+  async ({offerId, status}, { dispatch, extra: api}) => {
     try{
-      const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      console.log('после api.post')
-
-      // dispatch(changeOffer({
-      //   id: data.id,
-      //   title: data.title,
-      //   type: data.type,
-      //   price: data.price,
-      //   previewImage: data.previewImage,
-      //   city: data.city,
-      //   location: data.location,
-      //   isFavorite: data.isFavorite,
-      //   isPremium: data.isPremium,
-      //   rating: data.rating
-      // }));
+      await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
     } catch (error) {
-      console.log('error');
+      dispatch(setError('Failed to save offer to favorites'));
     }
 
   },
 );
-
-
-
 
 export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
   dispatch: AppDispatch;
@@ -149,9 +129,9 @@ export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
   async ({offerId, comment, rating}, {dispatch, extra: api}) => {
     try{
       const {data} = await api.post<Reviews>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
-      dispatch(addReview(data))
+      dispatch(addReview(data));
     } catch (error) {
-      console.log('error');
+      throw new Error('error');
     }
 
   },
@@ -182,7 +162,6 @@ export const loginAction = createAsyncThunk<void, AuthData, {
   async ({email, password}, {dispatch, extra: api}) => {
     try{
       const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
-      console.log(11111111, data.avatarUrl)
       dispatch(getUserData(data));
       saveToken(data.token);
       dispatch(requireAuthorization(AuthorizationStatus.Auth));

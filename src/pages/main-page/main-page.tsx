@@ -18,8 +18,6 @@ function MainPage(): JSX.Element{
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-  // const fetchFavoriteOfferss = useAppSelector((state) => state.favoriteOffers)
-
 
   useMemo(() => {
     switch (activeSort) {
@@ -37,7 +35,7 @@ function MainPage(): JSX.Element{
         break;
 
       default:
-        console.log('Sorry');
+        break;
     }
 
   },[activeSort, currentOffers]);
