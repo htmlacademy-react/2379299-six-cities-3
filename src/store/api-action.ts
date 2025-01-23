@@ -109,7 +109,7 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
   state: State;
   extra: AxiosInstance;
 }>(
-  'user/saveReviews',
+  'user/saveFavorite',
   async ({offerId, status}, { dispatch, extra: api}) => {
     try{
       await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);

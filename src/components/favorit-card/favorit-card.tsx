@@ -11,18 +11,15 @@ type Props = {
 function FavoritCardRew({offer}:Props):JSX.Element{
 
   const {title, price, type,} = offer;
-  const [isFavorite, setIsFavorite] = useState<boolean>(offer.isFavorite);
   const dispatch = useAppDispatch();
   const handlerClick = (id: string) => {
 
     dispatch(
       saveFavoriteOffers({
         offerId: id,
-        status: Number(!isFavorite)
+        status: Number(!offer.isFavorite)
       })
-
     );
-    setIsFavorite(!isFavorite);
     dispatch(fetchFavoriteOffers());
   };
 
