@@ -5,14 +5,15 @@ import { logoutAction } from '../../store/api-action';
 import { memo } from 'react';
 
 function HeaderRew():JSX.Element{
+
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const userData = useAppSelector((state) => state.userData);
+  const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
   const dispatch = useAppDispatch();
   const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(logoutAction());
   };
-
   const divStyle = {
     backgroundImage: `url(${userData?.avatarUrl})`,
     borderRadius: '50%',
@@ -36,7 +37,7 @@ function HeaderRew():JSX.Element{
                       <div className="header__avatar-wrapper user__avatar-wrapper" style={divStyle} >
                       </div>
                       <span className="header__user-name user__name">{userData?.email}</span>
-                      <span className="header__favorite-count">3</span>
+                      <span className="header__favorite-count">{favoriteOffers.length}</span>
                     </Link>
                   </li>
                 ) : null}

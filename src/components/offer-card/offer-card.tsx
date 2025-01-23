@@ -1,8 +1,8 @@
-import { memo, useEffect, useState } from 'react';
+import { memo, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
-import { store } from '../../store';
-import { saveFavoriteOffers } from '../../store/api-action';
+import { fetchFavoriteOffers, saveFavoriteOffers } from '../../store/api-action';
+import { useAppDispatch } from '../../hooks';
 
 type Props = {
   offer: Offer;
@@ -21,14 +21,15 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
     setActiveOffer!('');
   }
 
-  useEffect(() => {},[]);
-
+  const dispatch = useAppDispatch();
   const handlerClick = (id: string) => {
-    store.dispatch(saveFavoriteOffers({
-      offerId: id,
-      status: Number(!isFavorite),
-    }));
+    dispatch(
+      saveFavoriteOffers({
+        offerId: id,
+        status: Number(!isFavorite),
+      }));
     setIsFavorite(!isFavorite);
+    dispatch(fetchFavoriteOffers());
   };
 
   return(

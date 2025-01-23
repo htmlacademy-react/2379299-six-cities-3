@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom';
 import FavoritCard from '../../components/favorit-card/favorit-card';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { cities } from '../../ mocks/const';
+import { fetchFavoriteOffers } from '../../store/api-action';
+import { useEffect } from 'react';
+
 
 function FavoritesPage():JSX.Element{
+  const dispatch = useAppDispatch();
+
+  useEffect(() =>{
+    dispatch(fetchFavoriteOffers());
+
+  },[dispatch]);
   const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
   return(
     <main className="page__main page__main--favorites">
@@ -25,7 +34,7 @@ function FavoritesPage():JSX.Element{
                       </div>
                     </div>
                     <div className="favorites__places">
-                      {cityfavoritesOffers.map((offer) => <FavoritCard key={offer.id} offer={offer}/>)}
+                      {cityfavoritesOffers.map((offer) => <FavoritCard key={offer.id} offer={offer} />)}
                     </div>
                   </li>));
             })}

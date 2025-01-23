@@ -8,7 +8,6 @@ import { checkAuthAction, fetchFavoriteOffers, fetchOffersAction} from './store/
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());
-
 store.dispatch(fetchFavoriteOffers());
 
 const root = ReactDOM.createRoot(
