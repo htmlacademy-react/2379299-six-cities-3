@@ -13,17 +13,15 @@ type Props = {
 
 function FormForStarRew({star, setDataStar, dataStar}:Props):JSX.Element{
 
-  const handlerClick = (evt:React.MouseEvent<HTMLInputElement>) => {
-    evt.preventDefault();
-    setDataStar(Number(evt.currentTarget.value));
-  };
   return(
-    <Fragment >
+    <Fragment key={star.value}>
       <input className="form__rating-input visually-hidden" name="rating"
         value={star.value}
         id={`${star.value}-stars`}
         type="radio"
-        onClick={handlerClick}
+        onClick={() => {
+          setDataStar(star.value);
+        }}
         checked={star.value === dataStar}
       />
       <label
