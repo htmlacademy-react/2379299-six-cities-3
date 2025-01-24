@@ -3,6 +3,7 @@ import { saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { COUNT_STAR } from '../../ mocks/const';
 import FormForStar from './form-for-star';
+import { AuthorizationStatus, MAXIMUM_TEXT_LENGTH, MINIMUM_TEXT_LENGTH } from '../../components/const';
 
 type Props = {
   id: string;
@@ -16,9 +17,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
   function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
     setDataReviews(evt.target.value);
-
   }
-
   function handlerSubmit(evt:React.FormEvent<HTMLFormElement>){
     evt.preventDefault();
     dispatch(saveReviews({
@@ -46,6 +45,8 @@ function FormReviewsRew({id}: Props):JSX.Element{
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={onHandlerChange}
+        maxLength={MAXIMUM_TEXT_LENGTH}
+        minLength={MINIMUM_TEXT_LENGTH}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -55,7 +56,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {!authorizationStatus}
+          disabled = {authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < MINIMUM_TEXT_LENGTH || dataReviews.length > MAXIMUM_TEXT_LENGTH}
         >Submit
         </button>
       </div>

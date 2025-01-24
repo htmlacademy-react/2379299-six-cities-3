@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
 import { loginAction } from '../../store/api-action';
 import { useAppDispatch } from '../../hooks';
+import { setError } from '../../store/action';
 
 function LoginPage():JSX.Element{
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -16,10 +17,16 @@ function LoginPage():JSX.Element{
   const handlerSubmit = (evt: FormEvent<HTMLFormElement>) =>{
     evt.preventDefault();
     if (passwordRef.current !== null && emailRef.current !== null) {
-      onSubmit({
-        email:emailRef.current.value,
-        password:passwordRef.current.value,
-      });
+      const password = passwordRef.current.value;
+      if(/[A-Za-z]/.test(password) && /\d/.test(password)){
+        onSubmit({
+          email:emailRef.current.value,
+          password:passwordRef.current.value,
+        });
+      }else {
+        const errorMessage = 'Пароль должен содержать как минимум одну букву и одну цифру.';
+        dispatch(setError(errorMessage));
+      }
     }
   };
 

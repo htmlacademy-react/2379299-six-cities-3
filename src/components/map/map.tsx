@@ -11,6 +11,7 @@ type Props = {
 }
 
 function MapRew({currentOffers, activeOffer}: Props) {
+
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, currentOffers);
   const defaultCustomIcon = leaflet.icon({

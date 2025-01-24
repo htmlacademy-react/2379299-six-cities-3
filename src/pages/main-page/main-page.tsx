@@ -18,7 +18,6 @@ function MainPage(): JSX.Element{
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-console.log('currentOffers',currentOffers)
   useMemo(() => {
     switch (activeSort) {
       case 'Price: low to high':

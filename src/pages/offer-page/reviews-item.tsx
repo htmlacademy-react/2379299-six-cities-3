@@ -8,10 +8,10 @@ type Props={
 
 function ReviewsItemRew({review}:Props):JSX.Element{
 
-  const {user, comment, date} = review;
+  const {user, comment, date, rating} = review;
 
   const formattedDate = dayjs(date).format('MMMM YYYY');
-
+  const ratingOffer = Math.round(rating);
 
   return(
     <li className="reviews__item">
@@ -26,8 +26,8 @@ function ReviewsItemRew({review}:Props):JSX.Element{
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: '80%'}}></span>
-            <span className="visually-hidden">Rating</span>
+            <span style={{width: `${ratingOffer * 20}%`}}></span>
+            <span className="visually-hidden">{rating}</span>
           </div>
         </div>
         <p className="reviews__text">

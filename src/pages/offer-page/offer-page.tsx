@@ -9,6 +9,7 @@ import Goods from './goods';
 import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
 import ReviewsItem from './reviews-item';
+import { AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
 
 
 function OfferPage():JSX.Element{
@@ -28,8 +29,10 @@ function OfferPage():JSX.Element{
   const loadingStatus = useAppSelector((state) => state.isOfferDataLoading);
   const loadingStatusNearby = useAppSelector((state) => state.isNearbyOfferDataLoading);
   const currentOffer = useAppSelector((state) => state.offer);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const reviews = useAppSelector((state) => state.reviews);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
+  const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
 
   if (loadingStatus || loadingStatusNearby || !currentOffer){
 
@@ -60,8 +63,6 @@ function OfferPage():JSX.Element{
                   <span>Premium</span>
                 </div> : null
             }
-
-
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
                 {title}
@@ -121,9 +122,9 @@ function OfferPage():JSX.Element{
             <section className="offer__reviews reviews">
               <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
               <ul className="reviews__list">
-                {reviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
+                {sortingReviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
               </ul>
-              <FormComments id={id} />
+              {authorizationStatus === AuthorizationStatus.Auth && (<FormComments id={id} />)}
             </section>
           </div>
         </div>
