@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { fetchFavoriteOffers, saveFavoriteOffers } from '../../store/api-action';
-import { memo, useState } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 type Props = {
   offer: Offer;
@@ -22,6 +23,14 @@ function FavoritCardRew({offer}:Props):JSX.Element{
     );
     dispatch(fetchFavoriteOffers());
   };
+
+
+  const loadingStatus = useAppSelector((state) => state.isFavoriteOffersLoading);
+
+  if (loadingStatus){
+
+    return <LoadingScreen />;
+  }
 
   return(
     <article className="favorites__card place-card">

@@ -20,4 +20,5 @@ export const setError = createAction<string | null>('game/setError');
 export const setOffersDataLoadingStatus = createAction<boolean>('cities/setOffersDataLoadingStatus');
 export const setOfferDataLoadingStatus = createAction<boolean>('cities/setOfferDataLoadingStatus');
 export const setNearbyOfferDataLoadingStatus = createAction<boolean>('cities/setNearbyOfferDataLoadingStatus');
+export const setFavoriteOffersLoadingStatus = createAction<boolean>('cities/setFavoriteOffersLoadingStatus');
 
