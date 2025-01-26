@@ -137,7 +137,6 @@ export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
     } catch (error) {
       throw new Error('error');
     }
-
   },
 );
 
