@@ -2,7 +2,8 @@ import { memo, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import { fetchFavoriteOffers, saveFavoriteOffers } from '../../store/api-action';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AuthorizationStatus } from '../const';
 
 type Props = {
   offer: Offer;
@@ -11,6 +12,7 @@ type Props = {
 
 function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
   const [isFavorite, setIsFavorite] = useState<boolean>(offer.isFavorite);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
   function hendleMouseEnter(){
@@ -23,13 +25,15 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
 
   const dispatch = useAppDispatch();
   const handlerClick = (id: string) => {
-    dispatch(
-      saveFavoriteOffers({
-        offerId: id,
-        status: Number(!isFavorite),
-      }));
-    setIsFavorite(!isFavorite);
-    dispatch(fetchFavoriteOffers());
+    if(authorizationStatus === AuthorizationStatus.Auth){
+      dispatch(
+        saveFavoriteOffers({
+          offerId: id,
+          status: Number(!isFavorite),
+        }));
+      setIsFavorite(!isFavorite);
+      dispatch(fetchFavoriteOffers());
+    }
   };
 
   return(
