@@ -5,6 +5,8 @@ import ListCities from '../../components/list-cities/list-cities.tsx';
 import { useMemo, useState } from 'react';
 import SortOffers from './sort-offers.tsx';
 import { cities } from '../../ mocks/const.ts';
+import { PointForMap } from '../../types/point-for-map.ts';
+import { SetupForMap } from '../../types/setup-for-map.ts';
 
 
 function MainPage(): JSX.Element{
@@ -38,6 +40,19 @@ function MainPage(): JSX.Element{
     }
 
   },[activeSort, currentOffers]);
+
+
+  const pointsForMap: PointForMap[] = currentOffers.map((offer) => ({
+    lat: offer.location.latitude,
+    long: offer.location.longitude,
+    id: offer.id,
+  }));
+
+  const setupForMap: SetupForMap = ({
+    lat: currentOffers[0].city.location.latitude,
+    long: currentOffers[0].city.location.longitude,
+    zoom: currentOffers[0].city.location.zoom,
+  });
 
   return(
     <main className="page__main page__main--index">
@@ -81,7 +96,7 @@ function MainPage(): JSX.Element{
                 </div>
               </section>
               <div className="cities__right-section">
-                <Map currentOffers = {currentOffers} activeOffer={activeOffer}/>
+                <Map pointsForMap = {pointsForMap} setupForMap={setupForMap} activeOffer={activeOffer} className ={'cities__map map'}/>
               </div>
             </div>
           ) : (

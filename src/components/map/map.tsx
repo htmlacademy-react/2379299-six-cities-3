@@ -3,17 +3,21 @@ import useMap from '../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 import { memo, useEffect, useRef } from 'react';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../const';
-import { Offers } from '../../types/offer';
+import { PointForMap } from '../../types/point-for-map';
+import { SetupForMap } from '../../types/setup-for-map';
+
 
 type Props = {
-  currentOffers: Offers;
+  pointsForMap: PointForMap[];
   activeOffer?: string;
+  setupForMap: SetupForMap;
+  className: string;
 }
 
-function MapRew({currentOffers, activeOffer}: Props) {
+function MapRew({pointsForMap, className, activeOffer, setupForMap}: Props) {
 
   const mapRef = useRef<HTMLDivElement>(null);
-  const map = useMap(mapRef, currentOffers);
+  const map = useMap(mapRef, setupForMap);
   const defaultCustomIcon = leaflet.icon({
     iconUrl: URL_MARKER_DEFAULT,
     iconSize: [27, 39],
@@ -28,22 +32,21 @@ function MapRew({currentOffers, activeOffer}: Props) {
 
   useEffect(() => {
     if (map) {
-      currentOffers.forEach((offer) => {
+      pointsForMap.forEach((offer) => {
         leaflet
           .marker({
-            lat: offer.location.latitude,
-            lng: offer.location.longitude
+            lat: offer.lat,
+            lng: offer.long
           }, {
             icon: offer.id === activeOffer ? currentCustomIcon : defaultCustomIcon ,
           })
           .addTo(map);
       });
     }
-  }, [map, currentOffers, defaultCustomIcon, activeOffer, currentCustomIcon]);
+  }, [map, pointsForMap, defaultCustomIcon, activeOffer, currentCustomIcon]);
 
   return (
-    <section className="offer__map map" ref={mapRef} />
-
+    <section className={className} ref={mapRef} />
   );
 }
 const Map = memo(MapRew);

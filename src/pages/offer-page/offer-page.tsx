@@ -10,7 +10,8 @@ import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
 import ReviewsItem from './reviews-item';
 import { AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
-
+import { PointForMap } from '../../types/point-for-map';
+import { SetupForMap } from '../../types/setup-for-map';
 
 function OfferPage():JSX.Element{
 
@@ -39,10 +40,28 @@ function OfferPage():JSX.Element{
     return <LoadingScreen />;
   }
 
-
   if(!currentOffer){
     return <Navigate replace to="/not-found-page" />;
   }
+
+  const pointForMap: PointForMap = {
+    lat: currentOffer.location.latitude,
+    long: currentOffer.location.longitude,
+    id: currentOffer.id,
+  };
+  const nearbyPointForMap: PointForMap[] = nearbyOffers.map((offer) => ({
+    lat: offer.location.latitude,
+    long: offer.location.longitude,
+    id: offer.id,
+  }));
+
+  const pointsForMap = [...nearbyPointForMap, pointForMap];
+
+  const setupForMap: SetupForMap = ({
+    lat: currentOffer.city.location.latitude,
+    long: currentOffer.city.location.longitude,
+    zoom: currentOffer.city.location.zoom,
+  });
 
   const {title, id, isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
 
@@ -129,7 +148,7 @@ function OfferPage():JSX.Element{
           </div>
         </div>
         <section>
-          <Map currentOffers={nearbyOffers} activeOffer={prodId}/>
+          <Map pointsForMap={pointsForMap} activeOffer={prodId} setupForMap={setupForMap} className ={'offer__map map'}/>
         </section>
       </section>
       <div className="container">
