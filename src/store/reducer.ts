@@ -1,9 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, changeCurrentCity, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
 import { Reviews } from '../types/reviews';
+import { UserData } from '../types/user-data';
 
 
 type InitialState = {
@@ -12,24 +13,32 @@ type InitialState = {
   offer: FullOffer | null;
   reviews: Reviews[] ;
   nearbyOffers: Offers;
+  favoriteOffers:Offers;
+  userData : UserData | null;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   isOffersDataLoading: boolean;
   isOfferDataLoading: boolean;
   isNearbyOfferDataLoading: boolean;
+  isFavoriteOffersLoading : boolean;
+  isFavoriteOffersSave: boolean;
 };
 
 const initialState: InitialState = {
   currentCity: 'Paris',
   offers: [],
   offer: null,
+  userData: null,
   reviews: [],
   nearbyOffers: [],
+  favoriteOffers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isOffersDataLoading: false,
   isOfferDataLoading: true,
-  isNearbyOfferDataLoading: true
+  isNearbyOfferDataLoading: true,
+  isFavoriteOffersLoading: true,
+  isFavoriteOffersSave: true,
 };
 
 
@@ -51,6 +60,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
+    .addCase(getUserData, (state, {payload}) => {
+      state.userData = payload;
+    })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
     })
@@ -66,10 +78,18 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
     })
+    .addCase(loadFavoriteOffers, (state, action) => {
+      state.favoriteOffers = action.payload;
+    })
+    .addCase(setFavoriteOffersLoadingStatus, (state, action) => {
+      state.isFavoriteOffersLoading = action.payload;
+    })
+    .addCase(setFavoriteOffersSaveStatus, (state, action) => {
+      state.isFavoriteOffersSave = action.payload;
+    })
     .addCase(setNearbyOfferDataLoadingStatus, (state, action) => {
       state.isNearbyOfferDataLoading = action.payload;
     });
-
 });
 
 

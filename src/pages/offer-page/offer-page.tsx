@@ -1,16 +1,17 @@
 import FormComments from './form-reviews';
-
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchNearbyOffers, fetchOfferAction, fetchReviews } from '../../store/api-action';
+import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
 import { Navigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferGalleryImage from './offer-gallery-image';
 import Goods from './goods';
-import Review from './review';
 import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
-
+import ReviewsItem from './reviews-item';
+import { AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
+import { PointForMap } from '../../types/point-for-map';
+import { SetupForMap } from '../../types/setup-for-map';
 
 function OfferPage():JSX.Element{
 
@@ -29,16 +30,52 @@ function OfferPage():JSX.Element{
   const loadingStatus = useAppSelector((state) => state.isOfferDataLoading);
   const loadingStatusNearby = useAppSelector((state) => state.isNearbyOfferDataLoading);
   const currentOffer = useAppSelector((state) => state.offer);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const reviews = useAppSelector((state) => state.reviews);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
+  const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
+  const [isFavorite, setIsFavorite] = useState<boolean>(currentOffer?.isFavorite ?? false);
 
-  if (loadingStatus || loadingStatusNearby || !currentOffer){
+
+  if (loadingStatus || loadingStatusNearby || !currentOffer || loadingStatus){
+
     return <LoadingScreen />;
   }
 
   if(!currentOffer){
     return <Navigate replace to="/not-found-page" />;
   }
+
+
+  const handlerClick = (id: string) => {
+    if(authorizationStatus === AuthorizationStatus.Auth){
+      dispatch(
+        saveFavoriteOffers({
+          offerId: id,
+          status: Number(!isFavorite),
+        }));
+      setIsFavorite(!isFavorite);
+    }
+  };
+
+  const pointForMap: PointForMap = {
+    lat: currentOffer.location.latitude,
+    long: currentOffer.location.longitude,
+    id: currentOffer.id,
+  };
+  const nearbyPointForMap: PointForMap[] = nearbyOffers.map((offer) => ({
+    lat: offer.location.latitude,
+    long: offer.location.longitude,
+    id: offer.id,
+  }));
+
+  const pointsForMap = [...nearbyPointForMap, pointForMap];
+
+  const setupForMap: SetupForMap = ({
+    lat: currentOffer.city.location.latitude,
+    long: currentOffer.city.location.longitude,
+    zoom: currentOffer.city.location.zoom,
+  });
 
   const {title, id, isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
 
@@ -59,13 +96,15 @@ function OfferPage():JSX.Element{
                   <span>Premium</span>
                 </div> : null
             }
-
-
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
                 {title}
               </h1>
-              <button className="offer__bookmark-button button" type="button">
+              <button
+                className={`offer__bookmark-button button  ${isFavorite ? 'offer__bookmark-button--active' : '' } `}
+                type="button"
+                onClick={() => handlerClick(currentOffer.id)}
+              >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use href="#icon-bookmark"></use>
                 </svg>
@@ -120,14 +159,14 @@ function OfferPage():JSX.Element{
             <section className="offer__reviews reviews">
               <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
               <ul className="reviews__list">
-                {reviews.map((review) => <Review review={review} key={review.id}/>)}
+                {sortingReviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
               </ul>
-              <FormComments id={id} />
+              {authorizationStatus === AuthorizationStatus.Auth && (<FormComments id={id} />)}
             </section>
           </div>
         </div>
         <section>
-          <Map currentOffers={nearbyOffers} activeOffer={prodId}/>
+          <Map pointsForMap={pointsForMap} activeOffer={prodId} setupForMap={setupForMap} className ={'offer__map map'}/>
         </section>
       </section>
       <div className="container">

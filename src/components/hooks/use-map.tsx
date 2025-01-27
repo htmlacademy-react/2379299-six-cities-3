@@ -1,32 +1,32 @@
 import leaflet from 'leaflet';
-import { Offers } from '../../types/offer';
 import { useEffect, useRef, useState } from 'react';
+import { SetupForMap } from '../../types/setup-for-map';
 
-function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
+function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
 
 
   useEffect(()=> {
-    if (map !== null && offers.length){
+    if (map !== null && setupForMap){
       map.setView({
-        lat: offers[0].city.location.latitude,
-        lng: offers[0].city.location.longitude,
+        lat: setupForMap.lat,
+        lng: setupForMap.long,
 
-      },offers[0].city.location.zoom
+      },setupForMap.zoom,
       );
     }
-  }, [offers?.[0].city]);
+  }, [setupForMap]);
 
 
   useEffect(() => {
     if (mapRef.current !== null && !isRenderedRef.current) {
       const instance = leaflet.map(mapRef.current, {
         center: {
-          lat: offers[0].city.location.latitude,
-          lng: offers[0].city.location.longitude,
+          lat: setupForMap.lat,
+          lng: setupForMap.long,
         },
-        zoom: offers[0].city.location.zoom,
+        zoom: setupForMap.zoom,
       });
       // leaflet.clearLayers();
 
@@ -42,7 +42,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, offers: Offers) {
       setMap(instance);
       isRenderedRef.current = true;
     }
-  }, [mapRef, offers]);
+  }, [mapRef, setupForMap]);
 
   return map;
 }

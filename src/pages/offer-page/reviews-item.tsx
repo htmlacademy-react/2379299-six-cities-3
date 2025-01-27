@@ -1,16 +1,17 @@
 import dayjs from 'dayjs';
-import { Review } from '../../types/reviews';
-type Props = {
-  review: Review;
+import { Reviews } from '../../types/reviews';
+import { memo } from 'react';
+
+type Props={
+  review: Reviews;
 }
 
+function ReviewsItemRew({review}:Props):JSX.Element{
 
-function ReviewsItem({review}:Props):JSX.Element{
-
-  const {user, comment, date} = review;
+  const {user, comment, date, rating} = review;
 
   const formattedDate = dayjs(date).format('MMMM YYYY');
-
+  const ratingOffer = Math.round(rating);
 
   return(
     <li className="reviews__item">
@@ -25,8 +26,8 @@ function ReviewsItem({review}:Props):JSX.Element{
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: '80%'}}></span>
-            <span className="visually-hidden">Rating</span>
+            <span style={{width: `${ratingOffer * 20}%`}}></span>
+            <span className="visually-hidden">{rating}</span>
           </div>
         </div>
         <p className="reviews__text">
@@ -37,4 +38,7 @@ function ReviewsItem({review}:Props):JSX.Element{
     </li>
   );
 }
+
+const ReviewsItem = memo(ReviewsItemRew);
 export default ReviewsItem;
+

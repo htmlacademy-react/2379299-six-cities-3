@@ -42,14 +42,16 @@ function App(): JSX.Element{
           />
           <Route
             path = {AppRoute.Favorites}
-            element = {<Favorites />}
+            element = {
+              <PrivateRoute authorizationStatus={authorizationStatus}>
+                <Favorites />
+              </PrivateRoute>
+            }
           />
           <Route
             path = {AppRoute.Offer}
             element = {
-              <PrivateRoute authorizationStatus={authorizationStatus}>
-                <OfferPage />
-              </PrivateRoute>
+              <OfferPage />
             }
           />
           <Route

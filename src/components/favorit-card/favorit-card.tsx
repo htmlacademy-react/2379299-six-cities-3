@@ -1,12 +1,30 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { saveFavoriteOffers } from '../../store/api-action';
+import { memo, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
 
 type Props = {
   offer: Offer;
 }
 
-function FavoritCard({offer}:Props):JSX.Element{
+function FavoritCardRew({offer}:Props):JSX.Element{
+  const [show, setShow] = useState<boolean>(true);
   const {title, price, type,} = offer;
+  const dispatch = useAppDispatch();
+  const handlerClick = (id: string) => {
+    setShow(false);
+    dispatch(
+      saveFavoriteOffers({
+        offerId: id,
+        status: Number(!offer.isFavorite)
+      })
+    );
+  };
+
+  if (!show){
+    return <> </>;
+  }
 
   return(
     <article className="favorites__card place-card">
@@ -24,7 +42,11 @@ function FavoritCard({offer}:Props):JSX.Element{
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className="place-card__bookmark-button place-card__bookmark-button--active button" type="button">
+          <button
+            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            type="button"
+            onClick={() => handlerClick(offer.id)}
+          >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>
             </svg>
@@ -45,5 +67,5 @@ function FavoritCard({offer}:Props):JSX.Element{
     </article>
   );
 }
-
+const FavoritCard = memo(FavoritCardRew);
 export default FavoritCard;
