@@ -1,36 +1,29 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { fetchFavoriteOffers, saveFavoriteOffers } from '../../store/api-action';
-import { memo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { saveFavoriteOffers } from '../../store/api-action';
+import { memo, useState } from 'react';
+import { useAppDispatch } from '../../hooks';
 
 type Props = {
   offer: Offer;
 }
 
 function FavoritCardRew({offer}:Props):JSX.Element{
-
+  const [show, setShow] = useState<boolean>(true);
   const {title, price, type,} = offer;
   const dispatch = useAppDispatch();
   const handlerClick = (id: string) => {
-
+    setShow(false);
     dispatch(
       saveFavoriteOffers({
         offerId: id,
         status: Number(!offer.isFavorite)
       })
     );
-    dispatch(fetchFavoriteOffers());
   };
 
-
-  const loadingStatus = useAppSelector((state) => state.isFavoriteOffersLoading);
-  const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
-
-  if (loadingStatus && loadingStatusSave){
-
-    return <LoadingScreen />;
+  if (!show){
+    return <> </>;
   }
 
   return(

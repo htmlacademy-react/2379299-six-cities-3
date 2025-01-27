@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
-import { fetchFavoriteOffers, saveFavoriteOffers } from '../../store/api-action';
+import { saveFavoriteOffers } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AuthorizationStatus } from '../const';
 
@@ -32,7 +32,6 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
           status: Number(!isFavorite),
         }));
       setIsFavorite(!isFavorite);
-      dispatch(fetchFavoriteOffers());
     }
   };
 
@@ -50,7 +49,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
       }
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${offer.isFavorite}`}>
+        <Link to={`/offer/${offer.id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>

@@ -1,6 +1,6 @@
 import FormComments from './form-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFavoriteOffers, fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
+import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
 import { Navigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
@@ -55,7 +55,6 @@ function OfferPage():JSX.Element{
           status: Number(!isFavorite),
         }));
       setIsFavorite(!isFavorite);
-      dispatch(fetchFavoriteOffers());
     }
   };
 

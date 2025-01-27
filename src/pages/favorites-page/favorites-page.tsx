@@ -1,28 +1,10 @@
 import { Link } from 'react-router-dom';
 import FavoritCard from '../../components/favorit-card/favorit-card';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { cities } from '../../ mocks/const';
-import { fetchFavoriteOffers } from '../../store/api-action';
-import { useEffect } from 'react';
-import LoadingScreen from '../loading-screen/loading-screen';
-
 
 function FavoritesPage():JSX.Element{
-  const dispatch = useAppDispatch();
-
-  useEffect(() =>{
-    dispatch(fetchFavoriteOffers());
-
-  },[dispatch]);
   const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
-
-  const loadingStatus = useAppSelector((state) => state.isFavoriteOffersLoading);
-
-
-  if (loadingStatus){
-
-    return <LoadingScreen />;
-  }
 
   return(
     <main className={`page__main page__main--favorites ${allFavoritesOffers.length > 0 ? '' : 'page__main--favorites-empty'}`}>

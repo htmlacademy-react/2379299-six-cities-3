@@ -33,9 +33,8 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     dispatch(setOffersDataLoadingStatus(true));
     const {data} = await api.get<Offers>(APIRoute.Offers);
-    dispatch(setOffersDataLoadingStatus(false));
     dispatch(loadOffers(data));
-
+    dispatch(setOffersDataLoadingStatus(false));
   },
 );
 
@@ -49,12 +48,12 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
     dispatch(setOfferDataLoadingStatus(true));
     try{
       const {data} = await api.get<FullOffer>(`${APIRoute.Offers}/${offerId}`);
-      dispatch(setOfferDataLoadingStatus(false));
       dispatch(loadOffer(data));
     }catch{
       dispatch(setError('Failed to load offer data'));
+    } finally {
+      dispatch(setOfferDataLoadingStatus(false));
     }
-
   },
 );
 
@@ -67,7 +66,6 @@ export const fetchReviews = createAsyncThunk<void, string, {
   async (offerId, {dispatch, extra: api}) => {
     const {data} = await api.get<Reviews[]>(`${APIRoute.Comments}/${offerId}`);
     dispatch(loadReviews(data));
-
   },
 );
 export const fetchNearbyOffers = createAsyncThunk<void, string, {
@@ -80,10 +78,11 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
     dispatch(setNearbyOfferDataLoadingStatus(true));
     try{
       const {data} = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
-      dispatch(setNearbyOfferDataLoadingStatus(false));
       dispatch(loadNearbyOffers(data));
     }catch{
       dispatch(setError('Failed to load nearby offer data'));
+    } finally {
+      dispatch(setNearbyOfferDataLoadingStatus(false));
     }
   },
 );
@@ -98,10 +97,11 @@ export const fetchFavoriteOffers = createAsyncThunk<void, undefined, {
     dispatch(setFavoriteOffersLoadingStatus(true));
     try{
       const {data} = await api.get<Offers>(`${APIRoute.Favorite}`);
-      dispatch(setFavoriteOffersLoadingStatus(false));
       dispatch(loadFavoriteOffers(data));
     }catch{
       dispatch(setError('Failed to load favorite offer data'));
+    } finally {
+      dispatch(setFavoriteOffersLoadingStatus(false));
     }
   },
 );
@@ -113,14 +113,15 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
 }>(
   'user/saveFavorite',
   async ({offerId, status}, { dispatch, extra: api}) => {
+    dispatch(setFavoriteOffersSaveStatus(true));
     try{
-      dispatch(setFavoriteOffersSaveStatus(true));
       await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      dispatch(setFavoriteOffersSaveStatus(false));
     } catch (error) {
       dispatch(setError('Failed to save offer to favorites'));
+    } finally {
+      dispatch(setFavoriteOffersSaveStatus(false));
+      dispatch(fetchFavoriteOffers());
     }
-
   },
 );
 
