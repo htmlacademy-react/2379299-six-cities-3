@@ -26,8 +26,9 @@ function FavoritCardRew({offer}:Props):JSX.Element{
 
 
   const loadingStatus = useAppSelector((state) => state.isFavoriteOffersLoading);
+  const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
 
-  if (loadingStatus){
+  if (loadingStatus && loadingStatusSave){
 
     return <LoadingScreen />;
   }

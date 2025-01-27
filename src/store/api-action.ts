@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { addReview, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
 import { Offer, Offers } from '../types/offer';
 
@@ -114,9 +114,9 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
   'user/saveFavorite',
   async ({offerId, status}, { dispatch, extra: api}) => {
     try{
-      dispatch(setFavoriteOffersLoadingStatus(true));
+      dispatch(setFavoriteOffersSaveStatus(true));
       await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
-      dispatch(setFavoriteOffersLoadingStatus(false));
+      dispatch(setFavoriteOffersSaveStatus(false));
     } catch (error) {
       dispatch(setError('Failed to save offer to favorites'));
     }
