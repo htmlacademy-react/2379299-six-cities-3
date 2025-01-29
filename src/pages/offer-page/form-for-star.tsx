@@ -9,9 +9,10 @@ type Props = {
   star: Star ;
   setDataStar: (value: number) => void;
   dataStar:number;
+  loadingStatusReviews: boolean;
 }
 
-function FormForStarRew({star, setDataStar, dataStar}:Props):JSX.Element{
+function FormForStarRew({loadingStatusReviews, star, setDataStar, dataStar}:Props):JSX.Element{
 
   return(
     <Fragment key={star.value}>
@@ -23,6 +24,7 @@ function FormForStarRew({star, setDataStar, dataStar}:Props):JSX.Element{
           setDataStar(star.value);
         }}
         checked={star.value === dataStar}
+        disabled={loadingStatusReviews}
       />
       <label
         htmlFor={`${star.value}-stars`}

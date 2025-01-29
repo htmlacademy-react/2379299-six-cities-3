@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state';
 import { AxiosInstance } from 'axios';
-import { addReview, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../components/const';
 import { Offer, Offers } from '../types/offer';
 
@@ -132,11 +132,14 @@ export const saveReviews = createAsyncThunk<void, ReviewForSubmit, {
 }>(
   'user/saveReviews',
   async ({offerId, comment, rating}, {dispatch, extra: api}) => {
+    dispatch(setReviewsDataLoadingStatus(true));
     try{
       const {data} = await api.post<Reviews>(`${APIRoute.Comments}/${offerId}`, {comment, rating});
       dispatch(addReview(data));
     } catch (error) {
       throw new Error('error');
+    } finally {
+      dispatch(setReviewsDataLoadingStatus(false));
     }
   },
 );

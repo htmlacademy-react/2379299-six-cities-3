@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus } from './action';
+import { addReview, changeCurrentCity, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
@@ -22,6 +22,7 @@ type InitialState = {
   isNearbyOfferDataLoading: boolean;
   isFavoriteOffersLoading : boolean;
   isFavoriteOffersSave: boolean;
+  isReviewsDataLoading: boolean;
 };
 
 const initialState: InitialState = {
@@ -39,6 +40,7 @@ const initialState: InitialState = {
   isNearbyOfferDataLoading: true,
   isFavoriteOffersLoading: true,
   isFavoriteOffersSave: true,
+  isReviewsDataLoading: true,
 };
 
 
@@ -89,6 +91,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setNearbyOfferDataLoadingStatus, (state, action) => {
       state.isNearbyOfferDataLoading = action.payload;
+    })
+    .addCase(setReviewsDataLoadingStatus, (state, action) => {
+      state.isReviewsDataLoading = action.payload;
     });
 });
 

@@ -13,6 +13,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
   const [dataReviews, setDataReviews] = useState<string>('');
   const [dataStar, setDataStar] = useState<number>(0);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const loadingStatusReviews = useAppSelector((state) => state.isReviewsDataLoading);
 
   function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
@@ -37,7 +38,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {COUNT_STAR.map((star) => <FormForStar dataStar={dataStar} star={star} key={star.value} setDataStar={setDataStar}/>)}
+        {COUNT_STAR.map((star) => <FormForStar loadingStatusReviews={loadingStatusReviews} dataStar={dataStar} star={star} key={star.value} setDataStar={setDataStar}/>)}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
@@ -47,6 +48,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
         onChange={onHandlerChange}
         maxLength={MAXIMUM_TEXT_LENGTH}
         minLength={MINIMUM_TEXT_LENGTH}
+        disabled = {loadingStatusReviews}
       >
       </textarea>
       <div className="reviews__button-wrapper">
@@ -56,7 +58,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < MINIMUM_TEXT_LENGTH || dataReviews.length > MAXIMUM_TEXT_LENGTH}
+          disabled = {loadingStatusReviews || authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < MINIMUM_TEXT_LENGTH || dataReviews.length > MAXIMUM_TEXT_LENGTH}
         >Submit
         </button>
       </div>

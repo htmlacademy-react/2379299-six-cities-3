@@ -86,7 +86,7 @@ function MainPage(): JSX.Element{
                     </svg>
                   </span>
                   {
-                    isShow ? <SortOffers setActiveSort={setActiveSort} setIsShow={setIsShow}/> : null
+                    isShow ? <SortOffers activeSort={activeSort} setActiveSort={setActiveSort} setIsShow={setIsShow}/> : null
                   }
 
                 </form>
