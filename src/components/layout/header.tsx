@@ -44,21 +44,16 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
                   <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
                     <div className="header__avatar-wrapper user__avatar-wrapper" style={authorizationStatus === AuthorizationStatus.Auth ? divStyle : defaultStyle} >
                     </div>
-                    <span className="header__user-name user__name">{authorizationStatus === AuthorizationStatus.Auth ? userData?.email : null}</span>
-                    <span className="header__favorite-count">{authorizationStatus === AuthorizationStatus.Auth ? favoriteOffers.length : null}</span>
+                    {
+                      authorizationStatus === AuthorizationStatus.Auth ?
+                        <>
+                          <span className="header__user-name user__name">{authorizationStatus === AuthorizationStatus.Auth ? userData?.email : null}</span>
+                          <span className="header__favorite-count">{authorizationStatus === AuthorizationStatus.Auth ? favoriteOffers.length : null}</span>
+                        </>
+                        : <span className="header__signout">Sign in</span>
+                    }
                   </Link>
                 </li>
-
-
-                {
-                  authorizationStatus === AuthorizationStatus.NoAuth ?
-                    <li className="header__nav-item">
-                      <Link className="header__nav-link" to={AppRoute.Login}>
-                        <span className="header__signout">Sign in</span>
-                      </Link>
-                    </li>
-                    : null
-                }
                 {
                   authorizationStatus === AuthorizationStatus.Auth ?
                     <li className="header__nav-item">
