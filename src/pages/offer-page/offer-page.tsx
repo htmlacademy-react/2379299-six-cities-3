@@ -81,6 +81,7 @@ function OfferPage():JSX.Element{
   });
 
   const {title, id, isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
+  const imagesOffer = images.slice(0, 6);
 
   const ratingOffer = Math.round(rating);
   return(
@@ -88,7 +89,7 @@ function OfferPage():JSX.Element{
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {images.map((img) => <OfferGalleryImage img={img} key={img}/>)}
+            {imagesOffer.map((img) => <OfferGalleryImage img={img} key={img}/>)}
           </div>
         </div>
         <div className="offer__container container">
