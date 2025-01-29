@@ -1,7 +1,7 @@
 import FormComments from './form-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferGalleryImage from './offer-gallery-image';
@@ -9,7 +9,7 @@ import Goods from './goods';
 import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
 import ReviewsItem from './reviews-item';
-import { AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
+import { AppRoute, AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
 import { PointForMap } from '../../types/point-for-map';
 import { SetupForMap } from '../../types/setup-for-map';
 
@@ -35,7 +35,7 @@ function OfferPage():JSX.Element{
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
   const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
   const [isFavorite, setIsFavorite] = useState<boolean>(currentOffer?.isFavorite ?? false);
-
+  const navigate = useNavigate();
 
   if (loadingStatus || loadingStatusNearby || !currentOffer || loadingStatus){
 
@@ -55,7 +55,10 @@ function OfferPage():JSX.Element{
           status: Number(!isFavorite),
         }));
       setIsFavorite(!isFavorite);
+    }else{
+      navigate(AppRoute.Login);
     }
+
   };
 
   const pointForMap: PointForMap = {

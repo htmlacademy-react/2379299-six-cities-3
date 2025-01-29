@@ -1,9 +1,9 @@
 import { memo, useState } from 'react';
 import { Offer } from '../../types/offer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { saveFavoriteOffers } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { AuthorizationStatus } from '../const';
+import { AppRoute, AuthorizationStatus } from '../const';
 
 type Props = {
   offer: Offer;
@@ -15,6 +15,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
+  const navigate = useNavigate();
   function hendleMouseEnter(){
     setActiveOffer!(offer.id);
   }
@@ -32,6 +33,8 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
           status: Number(!isFavorite),
         }));
       setIsFavorite(!isFavorite);
+    }else{
+      navigate(AppRoute.Login);
     }
   };
 
