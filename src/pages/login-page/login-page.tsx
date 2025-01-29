@@ -2,13 +2,17 @@ import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
 import { loginAction } from '../../store/api-action';
-import { useAppDispatch } from '../../hooks';
-import { setError } from '../../store/action';
+import { useAppDispatch} from '../../hooks';
+import { changeCurrentCity, setError } from '../../store/action';
+import { cities } from '../../ mocks/const';
+import { getRandomValue } from '../../ mocks/utils';
+import { AppRoute } from '../../components/const';
 
 function LoginPage():JSX.Element{
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const randomCity = getRandomValue(cities);
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -68,8 +72,12 @@ function LoginPage():JSX.Element{
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <Link className="locations__item-link" to="#">
-              <span>Amsterdam</span>
+            <Link
+              className="locations__item-link"
+              to={AppRoute.Main}
+              onClick={() => dispatch(changeCurrentCity({currentCity: randomCity}))}
+            >
+              <span>{randomCity}</span>
             </Link>
           </div>
         </section>

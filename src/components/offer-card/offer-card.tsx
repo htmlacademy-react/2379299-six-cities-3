@@ -60,7 +60,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`${isFavorite ? 'place-card__bookmark-button--active' : 'place-card__bookmark-button'} button`}
+            className={`${isFavorite && authorizationStatus === AuthorizationStatus.Auth ? 'place-card__bookmark-button--active' : 'place-card__bookmark-button'} button`}
             type="button"
             onClick={() => handlerClick(offer.id)}
           >

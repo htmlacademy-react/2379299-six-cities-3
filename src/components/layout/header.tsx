@@ -4,7 +4,11 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-action';
 import { memo } from 'react';
 
-function HeaderRew():JSX.Element{
+type Props = {
+  isShowUserDate: boolean;
+}
+
+function HeaderRew({isShowUserDate}: Props):JSX.Element{
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const userData = useAppSelector((state) => state.userData);
@@ -19,6 +23,11 @@ function HeaderRew():JSX.Element{
     borderRadius: '50%',
   };
 
+  const defaultStyle = {
+    backgroundImage: 'url(../img/avatar.svg)',
+    borderRadius: '50%'
+  };
+
   return(
     <header className="header">
       <div className="container">
@@ -28,48 +37,48 @@ function HeaderRew():JSX.Element{
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {authorizationStatus === AuthorizationStatus.Auth ?
-                (
-                  <li className="header__nav-item user">
-                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                      <div className="header__avatar-wrapper user__avatar-wrapper" style={divStyle} >
-                      </div>
-                      <span className="header__user-name user__name">{userData?.email}</span>
-                      <span className="header__favorite-count">{favoriteOffers.length}</span>
-                    </Link>
-                  </li>
-                ) : null}
+          {isShowUserDate && (
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                <li className="header__nav-item user">
+                  <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                    <div className="header__avatar-wrapper user__avatar-wrapper" style={authorizationStatus === AuthorizationStatus.Auth ? divStyle : defaultStyle} >
+                    </div>
+                    <span className="header__user-name user__name">{authorizationStatus === AuthorizationStatus.Auth ? userData?.email : null}</span>
+                    <span className="header__favorite-count">{authorizationStatus === AuthorizationStatus.Auth ? favoriteOffers.length : null}</span>
+                  </Link>
+                </li>
 
-              {
-                authorizationStatus === AuthorizationStatus.NoAuth ?
-                  <li className="header__nav-item">
-                    <Link className="header__nav-link" to={AppRoute.Login}>
-                      <span className="header__signout">Sign in</span>
-                    </Link>
-                  </li>
-                  : null
-              }
-              {
-                authorizationStatus === AuthorizationStatus.Auth ?
-                  <li className="header__nav-item">
-                    <Link
-                      className="header__nav-link"
-                      to={AppRoute.Login}
-                      onClick={handlerClick}
 
-                    >
-                      <span
-                        className="header__signout"
-                      >Sign out
-                      </span>
-                    </Link>
-                  </li>
-                  : null
-              }
-            </ul>
-          </nav>
+                {
+                  authorizationStatus === AuthorizationStatus.NoAuth ?
+                    <li className="header__nav-item">
+                      <Link className="header__nav-link" to={AppRoute.Login}>
+                        <span className="header__signout">Sign in</span>
+                      </Link>
+                    </li>
+                    : null
+                }
+                {
+                  authorizationStatus === AuthorizationStatus.Auth ?
+                    <li className="header__nav-item">
+                      <Link
+                        className="header__nav-link"
+                        to={AppRoute.Login}
+                        onClick={handlerClick}
+
+                      >
+                        <span
+                          className="header__signout"
+                        >Sign out
+                        </span>
+                      </Link>
+                    </li>
+                    : null
+                }
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
     </header>

@@ -10,14 +10,17 @@ function LayoutRew():JSX.Element{
   const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
   let text = 'text';
   let footerPage = false;
+  let isShowUserDate;
   switch (location.pathname) {
     case AppRoute.Main:
       text = 'page--gray page--main';
       footerPage = false;
+      isShowUserDate = true;
       break;
     case AppRoute.Login:
       text = 'page--gray page--login';
       footerPage = false;
+      isShowUserDate = false;
       break;
     case AppRoute.Favorites:
       if (allFavoritesOffers.length > 0){
@@ -26,14 +29,16 @@ function LayoutRew():JSX.Element{
         text = 'page--favorites-empty';
       }
       footerPage = true;
+      isShowUserDate = true;
       break;
     default:
+      isShowUserDate = true;
       break;
   }
 
   return(
     <div className={`page ${text}`}>
-      <Header />
+      <Header isShowUserDate={isShowUserDate}/>
       <Outlet />
 
       {footerPage && (
