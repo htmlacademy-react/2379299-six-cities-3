@@ -1,9 +1,9 @@
 import { memo, useEffect, useState } from 'react';
 import { saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { COUNT_STAR } from '../../ mocks/const';
 import FormForStar from './form-for-star';
-import { AuthorizationStatus, MAXIMUM_TEXT_LENGTH, MINIMUM_TEXT_LENGTH } from '../../components/const';
+import { AuthorizationStatus, TEXT_LENGTH } from '../../components/const';
+import { COUNT_STAR } from '../../helpers/const';
 
 type Props = {
   id: string;
@@ -24,18 +24,19 @@ function FormReviewsRew({id}: Props):JSX.Element{
   }, [reviewSuccess]);
 
 
-  function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
+  function onHandleChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
     setDataReviews(evt.target.value);
   }
-  function handlerSubmit(evt:React.FormEvent<HTMLFormElement>){
+  function handleSubmit(evt:React.FormEvent<HTMLFormElement>){
     evt.preventDefault();
-    dispatch(saveReviews({
-      offerId: id,
-      comment:dataReviews,
-      rating:dataStar
-    }));
-    evt.currentTarget.reset();
+    if (dataStar && id && dataStar !== 0) {
+      dispatch(saveReviews({
+        offerId: id,
+        comment:dataReviews,
+        rating:dataStar
+      }));
+    }
   }
 
   return(
@@ -43,7 +44,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={handlerSubmit}
+      onSubmit={handleSubmit}
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
@@ -54,9 +55,9 @@ function FormReviewsRew({id}: Props):JSX.Element{
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={onHandlerChange}
-        maxLength={MAXIMUM_TEXT_LENGTH}
-        minLength={MINIMUM_TEXT_LENGTH}
+        onChange={onHandleChange}
+        maxLength={TEXT_LENGTH.MAXIMUM}
+        minLength={TEXT_LENGTH.MINIMUM}
         disabled = {loadingStatusReviews}
       >
       </textarea>
@@ -67,7 +68,7 @@ function FormReviewsRew({id}: Props):JSX.Element{
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {loadingStatusReviews || authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < MINIMUM_TEXT_LENGTH || dataReviews.length > MAXIMUM_TEXT_LENGTH}
+          disabled = {loadingStatusReviews || authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < TEXT_LENGTH.MINIMUM || dataReviews.length > TEXT_LENGTH.MAXIMUM}
         >Submit
         </button>
       </div>

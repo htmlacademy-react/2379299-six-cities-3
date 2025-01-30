@@ -8,7 +8,7 @@ type Star = {
 type Props = {
   star: Star ;
   setDataStar: (value: number) => void;
-  dataStar:number;
+  dataStar:number | undefined;
   loadingStatusReviews: boolean;
 }
 

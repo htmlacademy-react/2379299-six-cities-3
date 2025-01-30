@@ -14,7 +14,7 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
   const userData = useAppSelector((state) => state.userData);
   const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
   const dispatch = useAppDispatch();
-  const handlerClick = (evt: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();
     dispatch(logoutAction());
   };
@@ -60,7 +60,7 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
                       <Link
                         className="header__nav-link"
                         to={AppRoute.Login}
-                        onClick={handlerClick}
+                        onClick={handleClick}
                       >
                         <span
                           className="header__signout"

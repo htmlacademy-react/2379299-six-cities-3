@@ -14,7 +14,7 @@ function FavoritCardRew({ offer }: Props): JSX.Element {
   const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
   const ratingPercent = `${Math.round(rating) * 20}%`;
 
-  const handlerClick = () => {
+  const handleClick = () => {
     dispatch(
       saveFavoriteOffers({
         offerId: id,
@@ -50,7 +50,7 @@ function FavoritCardRew({ offer }: Props): JSX.Element {
           <button
             className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
-            onClick={handlerClick}
+            onClick={handleClick}
             disabled={loadingStatusSave}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">

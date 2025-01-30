@@ -45,7 +45,7 @@ function OfferPage():JSX.Element{
     return <Navigate replace to="/not-found-page" />;
   }
 
-  const handlerClick = () => {
+  const handleClick = () => {
     if(authorizationStatus === AuthorizationStatus.NoAuth){
       navigate(AppRoute.Login);
     }else{
@@ -103,7 +103,7 @@ function OfferPage():JSX.Element{
               <button
                 className={`offer__bookmark-button button  ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : '' } `}
                 type="button"
-                onClick={handlerClick}
+                onClick={handleClick}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use href="#icon-bookmark"></use>

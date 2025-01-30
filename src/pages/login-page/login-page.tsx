@@ -4,8 +4,8 @@ import { AuthData } from '../../types/auth-data ';
 import { clearErrorAction, loginAction } from '../../store/api-action';
 import { useAppDispatch} from '../../hooks';
 import { changeCurrentCity, setError } from '../../store/action';
-import { cities } from '../../ mocks/const';
-import { getRandomValue } from '../../ mocks/utils';
+import { cities } from '../../helpers/const';
+import { getRandomValue } from '../../helpers/utils';
 import { AppRoute } from '../../components/const';
 
 function LoginPage():JSX.Element{
@@ -18,7 +18,7 @@ function LoginPage():JSX.Element{
     dispatch(loginAction(authData));
   };
 
-  const handlerSubmit = (evt: FormEvent<HTMLFormElement>) =>{
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) =>{
     evt.preventDefault();
     if (passwordRef.current !== null && emailRef.current !== null) {
       const password = passwordRef.current.value;
@@ -43,7 +43,7 @@ function LoginPage():JSX.Element{
             className="login__form form"
             action="#"
             method="post"
-            onSubmit={handlerSubmit}
+            onSubmit={handleSubmit}
           >
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">E-mail</label>

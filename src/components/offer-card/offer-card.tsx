@@ -16,15 +16,18 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
   const ratingOffer = Math.round(rating);
   const navigate = useNavigate();
   function hendleMouseEnter(){
-    setActiveOffer!(offer.id);
+    if(setActiveOffer){
+      setActiveOffer(offer.id);
+    }
   }
   function hendleMouseLeave(){
-
-    setActiveOffer!('');
+    if(setActiveOffer){
+      setActiveOffer('');
+    }
   }
 
   const dispatch = useAppDispatch();
-  const handlerClick = () => {
+  const handleClick = () => {
     if(authorizationStatus !== AuthorizationStatus.Auth){
       navigate(AppRoute.Login);
     }else{
@@ -63,7 +66,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
           <button
             className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : '' }`}
             type="button"
-            onClick={ handlerClick}
+            onClick={ handleClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>

@@ -4,7 +4,7 @@ import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
 import { useMemo, useState } from 'react';
 import SortOffers from './sort-offers.tsx';
-import { cities } from '../../ mocks/const.ts';
+import { cities } from '../../helpers/const.ts';
 import { PointForMap } from '../../types/point-for-map.ts';
 import { SetupForMap } from '../../types/setup-for-map.ts';
 

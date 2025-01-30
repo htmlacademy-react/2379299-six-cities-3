@@ -11,7 +11,7 @@ function ListCitiesRew({city}:Props):JSX.Element{
 
   const dispatch = useAppDispatch();
 
-  function onHandlerClick(){
+  function onHandleClick(){
 
     dispatch(changeCurrentCity({currentCity:city}));
   }
@@ -22,7 +22,7 @@ function ListCitiesRew({city}:Props):JSX.Element{
       <Link
         className={`locations__item-link  ${city === currentCity ? 'tabs__item--active' : 'tabs__item'}`}
         to="#"
-        onClick={onHandlerClick}
+        onClick={onHandleClick}
       >
         <span>{city}</span>
       </Link>
