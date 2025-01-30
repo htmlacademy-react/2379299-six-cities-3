@@ -2,7 +2,7 @@ import FormComments from './form-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferGalleryImage from './offer-gallery-image';
 import Goods from './goods';
@@ -34,7 +34,6 @@ function OfferPage():JSX.Element{
   const reviews = useAppSelector((state) => state.reviews);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
   const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
-  const [isFavorite, setIsFavorite] = useState<boolean>(currentOffer?.isFavorite ?? false);
   const navigate = useNavigate();
 
   if (loadingStatus || loadingStatusNearby || !currentOffer || loadingStatus){
@@ -46,19 +45,16 @@ function OfferPage():JSX.Element{
     return <Navigate replace to="/not-found-page" />;
   }
 
-
-  const handlerClick = (id: string) => {
-    if(authorizationStatus === AuthorizationStatus.Auth){
+  const handlerClick = () => {
+    if(authorizationStatus === AuthorizationStatus.NoAuth){
+      navigate(AppRoute.Login);
+    }else{
       dispatch(
         saveFavoriteOffers({
-          offerId: id,
-          status: Number(!isFavorite),
+          offerId: currentOffer.id,
+          status: currentOffer.isFavorite,
         }));
-      setIsFavorite(!isFavorite);
-    }else{
-      navigate(AppRoute.Login);
     }
-
   };
 
   const pointForMap: PointForMap = {
@@ -105,9 +101,9 @@ function OfferPage():JSX.Element{
                 {title}
               </h1>
               <button
-                className={`offer__bookmark-button button  ${isFavorite ? 'offer__bookmark-button--active' : '' } `}
+                className={`offer__bookmark-button button  ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : '' } `}
                 type="button"
-                onClick={() => handlerClick(currentOffer.id)}
+                onClick={handlerClick}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use href="#icon-bookmark"></use>

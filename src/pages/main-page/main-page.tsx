@@ -10,13 +10,12 @@ import { SetupForMap } from '../../types/setup-for-map.ts';
 
 
 function MainPage(): JSX.Element{
-
-  const allOffers = useAppSelector((state) => state.offers);
   const currentCity = useAppSelector((state) =>state.currentCity);
-  const currentOffers = allOffers .filter((offer) => offer.city.name === currentCity);
+  const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === state.currentCity));
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
+
   useMemo(() => {
     switch (activeSort) {
       case 'Price: low to high':

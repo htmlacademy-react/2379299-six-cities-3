@@ -115,7 +115,8 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
   async ({offerId, status}, { dispatch, extra: api}) => {
     dispatch(setFavoriteOffersSaveStatus(true));
     try{
-      const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${status}`);
+      const newStatusFavorite = status ? 0 : 1;
+      const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${offerId}/${newStatusFavorite}`);
       dispatch(changeOffer(data));
     } catch (error) {
       dispatch(setError('Failed to save offer to favorites'));

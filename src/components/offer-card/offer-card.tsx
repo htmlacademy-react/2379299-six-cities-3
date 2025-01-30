@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { Offer } from '../../types/offer';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveFavoriteOffers } from '../../store/api-action';
@@ -11,7 +11,6 @@ type Props = {
 }
 
 function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
-  const [isFavorite, setIsFavorite] = useState<boolean>(offer.isFavorite);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const {title, price, isPremium, type, previewImage, rating} = offer;
   const ratingOffer = Math.round(rating);
@@ -25,16 +24,15 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
   }
 
   const dispatch = useAppDispatch();
-  const handlerClick = (id: string) => {
-    if(authorizationStatus === AuthorizationStatus.Auth){
+  const handlerClick = () => {
+    if(authorizationStatus === AuthorizationStatus.NoAuth){
+      navigate(AppRoute.Login);
+    }else{
       dispatch(
         saveFavoriteOffers({
-          offerId: id,
-          status: Number(!isFavorite),
+          offerId: offer.id,
+          status: offer.isFavorite,
         }));
-      setIsFavorite(!isFavorite);
-    }else{
-      navigate(AppRoute.Login);
     }
   };
 
@@ -63,9 +61,9 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`${isFavorite && authorizationStatus === AuthorizationStatus.Auth ? 'place-card__bookmark-button--active' : 'place-card__bookmark-button'} button`}
+            className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : '' }`}
             type="button"
-            onClick={() => handlerClick(offer.id)}
+            onClick={ handlerClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>

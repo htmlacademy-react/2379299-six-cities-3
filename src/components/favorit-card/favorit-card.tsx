@@ -1,36 +1,41 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { saveFavoriteOffers } from '../../store/api-action';
-import { memo, useState } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 type Props = {
   offer: Offer;
 }
 
 function FavoritCardRew({offer}:Props):JSX.Element{
-  const [show, setShow] = useState<boolean>(true);
   const {title, price, type,} = offer;
   const dispatch = useAppDispatch();
-  const handlerClick = (id: string) => {
-    setShow(false);
-    dispatch(
-      saveFavoriteOffers({
-        offerId: id,
-        status: Number(!offer.isFavorite)
-      })
-    );
-  };
+  const loadingStatus = useAppSelector((state) => state.isFavoriteOffersLoading);
+  const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
 
-  if (!show){
-    return <> </>;
+  if (loadingStatus || loadingStatusSave){
+
+    return <LoadingScreen />;
   }
 
+  const handlerClick = () => {
+    dispatch(
+      saveFavoriteOffers({
+        offerId: offer.id,
+        status: offer.isFavorite,
+      }));
+  };
   return(
     <article className="favorites__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+      {
+        offer.isPremium ? (
+          <div className="place-card__mark">
+            <span>Premium</span>
+          </div>
+        ) : null
+      }
       <div className="favorites__image-wrapper place-card__image-wrapper">
         <Link to="#">
           <img className="place-card__image" src="img/apartment-small-03.jpg" width="150" height="110" alt="Place image" />
@@ -45,7 +50,7 @@ function FavoritCardRew({offer}:Props):JSX.Element{
           <button
             className="place-card__bookmark-button place-card__bookmark-button--active button"
             type="button"
-            onClick={() => handlerClick(offer.id)}
+            onClick={handlerClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>
