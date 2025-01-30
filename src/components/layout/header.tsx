@@ -61,7 +61,6 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
                         className="header__nav-link"
                         to={AppRoute.Login}
                         onClick={handlerClick}
-
                       >
                         <span
                           className="header__signout"

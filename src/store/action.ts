@@ -23,4 +23,7 @@ export const setNearbyOfferDataLoadingStatus = createAction<boolean>('cities/set
 export const setFavoriteOffersLoadingStatus = createAction<boolean>('cities/setFavoriteOffersLoadingStatus');
 export const setFavoriteOffersSaveStatus = createAction<boolean>('cities/setFavoriteOffersSaveStatus');
 export const setReviewsDataLoadingStatus = createAction<boolean>('cities/setReviewsDataLoadingStatus');
+export const clearFavirites = createAction('cities/clearFavirites');
+export const resetFavorites = createAction('cities/resetFavorites');
+
 

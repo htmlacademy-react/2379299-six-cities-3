@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
-import { loginAction } from '../../store/api-action';
+import { clearErrorAction, loginAction } from '../../store/api-action';
 import { useAppDispatch} from '../../hooks';
 import { changeCurrentCity, setError } from '../../store/action';
 import { cities } from '../../ mocks/const';
@@ -28,8 +28,8 @@ function LoginPage():JSX.Element{
           password:passwordRef.current.value,
         });
       }else {
-        const errorMessage = 'Пароль должен содержать как минимум одну букву и одну цифру.';
-        dispatch(setError(errorMessage));
+        dispatch(setError('Пароль должен содержать как минимум одну букву и одну цифру.'));
+        dispatch(clearErrorAction());
       }
     }
   };

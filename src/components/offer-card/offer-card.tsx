@@ -25,7 +25,7 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
 
   const dispatch = useAppDispatch();
   const handlerClick = () => {
-    if(authorizationStatus === AuthorizationStatus.NoAuth){
+    if(authorizationStatus !== AuthorizationStatus.Auth){
       navigate(AppRoute.Login);
     }else{
       dispatch(

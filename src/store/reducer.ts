@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, changeOffer, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
+import { addReview, changeCurrentCity, changeOffer, clearFavirites, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, resetFavorites, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
@@ -88,8 +88,34 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
     })
+    .addCase(clearFavirites, (state) => {
+      state.favoriteOffers = [];
+    })
     .addCase(loadFavoriteOffers, (state, action) => {
-      state.favoriteOffers = action.payload;
+      const favoriteOffers = action.payload;
+
+      // Обновляем offers
+      state.offers = state.offers.map((offer) => ({
+        ...offer,
+        isFavorite: favoriteOffers.some((favorite) => favorite.id === offer.id),
+      }));
+
+      // Обновляем offer
+      if (state.offer) {
+        state.offer = {
+          ...state.offer,
+          isFavorite: favoriteOffers.some((favorite) => favorite.id === state.offer?.id),
+        };
+      }
+
+      // Обновляем nearbyOffers
+      state.nearbyOffers = state.nearbyOffers.map((offer) => ({
+        ...offer,
+        isFavorite: favoriteOffers.some((favorite) => favorite.id === offer.id),
+      }));
+
+      // Устанавливаем favoriteOffers
+      state.favoriteOffers = favoriteOffers;
     })
     .addCase(setFavoriteOffersLoadingStatus, (state, action) => {
       state.isFavoriteOffersLoading = action.payload;
@@ -99,6 +125,30 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setNearbyOfferDataLoadingStatus, (state, action) => {
       state.isNearbyOfferDataLoading = action.payload;
+    })
+
+    .addCase(resetFavorites, (state) => {
+      state.offers = state.offers.map((offer) => ({
+        ...offer,
+        isFavorite: false,
+      }));
+
+      // Сбрасываем isFavorite для активного оффера
+      if (state.offer) {
+        state.offer = {
+          ...state.offer,
+          isFavorite: false,
+        };
+      }
+
+      // Сбрасываем isFavorite для nearbyOffers
+      state.nearbyOffers = state.nearbyOffers.map((offer) => ({
+        ...offer,
+        isFavorite: false,
+      }));
+
+      // Очищаем favoriteOffers
+      state.favoriteOffers = [];
     })
     .addCase(setReviewsDataLoadingStatus, (state, action) => {
       state.isReviewsDataLoading = action.payload;

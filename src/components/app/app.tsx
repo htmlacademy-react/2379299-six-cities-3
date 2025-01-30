@@ -7,14 +7,24 @@ import { AppRoute, AuthorizationStatus } from '../const';
 import NotFoundPage from '../../pages/not-found-page/not-found-page';
 import Layout from '../layout/layout';
 import PrivateRoute from '../private-route/private-route';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
+import { useEffect } from 'react';
+import { fetchFavoriteOffers } from '../../store/api-action';
 
 function App(): JSX.Element{
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isQuestionsDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  if (authorizationStatus === AuthorizationStatus.Unknown || isQuestionsDataLoading) {
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFavoriteOffers());
+    }
+  }, [dispatch, authorizationStatus]);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
     return (
       <LoadingScreen />
     );
