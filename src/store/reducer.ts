@@ -94,13 +94,11 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadFavoriteOffers, (state, action) => {
       const favoriteOffers = action.payload;
 
-      // Обновляем offers
       state.offers = state.offers.map((offer) => ({
         ...offer,
         isFavorite: favoriteOffers.some((favorite) => favorite.id === offer.id),
       }));
 
-      // Обновляем offer
       if (state.offer) {
         state.offer = {
           ...state.offer,
@@ -108,13 +106,11 @@ const reducer = createReducer(initialState, (builder) => {
         };
       }
 
-      // Обновляем nearbyOffers
       state.nearbyOffers = state.nearbyOffers.map((offer) => ({
         ...offer,
         isFavorite: favoriteOffers.some((favorite) => favorite.id === offer.id),
       }));
 
-      // Устанавливаем favoriteOffers
       state.favoriteOffers = favoriteOffers;
     })
     .addCase(setFavoriteOffersLoadingStatus, (state, action) => {
@@ -133,7 +129,6 @@ const reducer = createReducer(initialState, (builder) => {
         isFavorite: false,
       }));
 
-      // Сбрасываем isFavorite для активного оффера
       if (state.offer) {
         state.offer = {
           ...state.offer,
@@ -141,13 +136,11 @@ const reducer = createReducer(initialState, (builder) => {
         };
       }
 
-      // Сбрасываем isFavorite для nearbyOffers
       state.nearbyOffers = state.nearbyOffers.map((offer) => ({
         ...offer,
         isFavorite: false,
       }));
 
-      // Очищаем favoriteOffers
       state.favoriteOffers = [];
     })
     .addCase(setReviewsDataLoadingStatus, (state, action) => {
