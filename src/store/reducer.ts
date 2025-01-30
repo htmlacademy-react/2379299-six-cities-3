@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { addReview, changeCurrentCity, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
+import { addReview, changeCurrentCity, changeOffer, getUserData, loadFavoriteOffers, loadNearbyOffers, loadOffer, loadOffers, loadReviews, requireAuthorization, setError, setFavoriteOffersLoadingStatus, setFavoriteOffersSaveStatus, setNearbyOfferDataLoadingStatus, setOfferDataLoadingStatus, setOffersDataLoadingStatus, setReviewsDataLoadingStatus } from './action';
 import { AuthorizationStatus } from '../components/const';
 import { Offers } from '../types/offer';
 import { FullOffer } from '../types/full-offer';
@@ -64,6 +64,16 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getUserData, (state, {payload}) => {
       state.userData = payload;
+    })
+    .addCase(changeOffer, (state, {payload}) => {
+      state.offers.map((offer) => {
+        if (offer.id === payload.id){
+          return {
+            ...offer, isFavorite: payload.id
+          };
+        }
+        return offer;
+      });
     })
     .addCase(setOffersDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;

@@ -11,10 +11,7 @@ import { SetupForMap } from '../../types/setup-for-map.ts';
 
 function MainPage(): JSX.Element{
 
-
-  const currentFavorites = useAppSelector((state) =>state.favoriteOffers);
-  const allOffers = useAppSelector((state) =>state.offers.map(((offer) =>
-    currentFavorites.find((favorit) => favorit.id === offer.id) ? {...offer, isFavorite: true} : {...offer})));
+  const allOffers = useAppSelector((state) => state.offers);
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = allOffers .filter((offer) => offer.city.name === currentCity);
   const [activeOffer, setActiveOffer] = useState<string>('');
@@ -40,7 +37,6 @@ function MainPage(): JSX.Element{
     }
 
   },[activeSort, currentOffers]);
-
 
   const pointsForMap: PointForMap[] = currentOffers.map((offer) => ({
     lat: offer.location.latitude,
