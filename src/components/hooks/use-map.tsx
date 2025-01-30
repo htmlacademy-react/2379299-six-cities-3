@@ -2,10 +2,9 @@ import leaflet from 'leaflet';
 import { useEffect, useRef, useState } from 'react';
 import { SetupForMap } from '../../types/setup-for-map';
 
-function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap) {
+function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap |undefined) {
   const [map, setMap] = useState<leaflet.Map | null>(null);
   const isRenderedRef = useRef(false);
-
 
   useEffect(()=> {
     if (map !== null && setupForMap){
@@ -20,7 +19,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap
 
 
   useEffect(() => {
-    if (mapRef.current !== null && !isRenderedRef.current) {
+    if (mapRef.current !== null && !isRenderedRef.current && setupForMap) {
       const instance = leaflet.map(mapRef.current, {
         center: {
           lat: setupForMap.lat,
@@ -28,7 +27,6 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap
         },
         zoom: setupForMap.zoom,
       });
-      // leaflet.clearLayers();
 
       leaflet
         .tileLayer(

@@ -10,7 +10,7 @@ import { SetupForMap } from '../../types/setup-for-map';
 type Props = {
   pointsForMap: PointForMap[];
   activeOffer?: string;
-  setupForMap: SetupForMap;
+  setupForMap: SetupForMap | undefined;
   className: string;
 }
 

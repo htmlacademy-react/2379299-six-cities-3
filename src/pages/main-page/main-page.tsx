@@ -8,49 +8,45 @@ import { cities } from '../../ mocks/const.ts';
 import { PointForMap } from '../../types/point-for-map.ts';
 import { SetupForMap } from '../../types/setup-for-map.ts';
 
-
 function MainPage(): JSX.Element{
   const currentCity = useAppSelector((state) =>state.currentCity);
   const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === state.currentCity));
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-
-  useMemo(() => {
-    switch (activeSort) {
-      case 'Price: low to high':
-        currentOffers.sort((a, b) => a.price - b.price);
-        break;
-      case 'Price: high to low':
-        currentOffers.sort((a, b) => b.price - a.price);
-        break;
-      case 'Top rated first':
-        currentOffers.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'Popular':
-        currentOffers.sort((a, b) => b.price - a.price);
-        break;
-
-      default:
-        break;
+  const sortedOffers = useMemo(() => {
+    if (currentOffers.length > 0){
+      const offersCopy = [...currentOffers];
+      switch (activeSort) {
+        case 'Price: low to high':
+          return offersCopy.sort((a, b) => a.price - b.price);
+        case 'Price: high to low':
+          return offersCopy.sort((a, b) => b.price - a.price);
+        case 'Top rated first':
+          return offersCopy.sort((a, b) => b.rating - a.rating);
+        case 'Popular':
+        default:
+          return offersCopy;
+      }
+    }else{
+      return [];
     }
+  }, [activeSort, currentOffers]);
 
-  },[activeSort, currentOffers]);
-
-  const pointsForMap: PointForMap[] = currentOffers.map((offer) => ({
+  const pointsForMap: PointForMap[] = currentOffers?.map((offer) => ({
     lat: offer.location.latitude,
     long: offer.location.longitude,
     id: offer.id,
-  }));
+  })) ?? [];
 
-  const setupForMap: SetupForMap = ({
+  const setupForMap: SetupForMap | undefined = currentOffers.length > 0 ? {
     lat: currentOffers[0].city.location.latitude,
     long: currentOffers[0].city.location.longitude,
     zoom: currentOffers[0].city.location.zoom,
-  });
+  } : undefined;
 
   return(
-    <main className="page__main page__main--index">
+    <main className={`page__main page__main--index ${currentOffers.length > 0 ? '' : 'page__main--index-empty'}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
@@ -86,7 +82,7 @@ function MainPage(): JSX.Element{
 
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  {currentOffers.map((offer) =>
+                  {sortedOffers.map((offer) =>
                     <OfferCard key={offer.id} offer={offer} setActiveOffer={setActiveOffer}/>)}
                 </div>
               </section>
