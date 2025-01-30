@@ -13,6 +13,7 @@ type InitialState = {
   offer: FullOffer | null;
   reviews: Reviews[] ;
   nearbyOffers: Offers;
+  reviewSuccess: boolean;
   favoriteOffers:Offers;
   userData : UserData | null;
   authorizationStatus: AuthorizationStatus;
@@ -32,6 +33,7 @@ const initialState: InitialState = {
   userData: null,
   reviews: [],
   nearbyOffers: [],
+  reviewSuccess: false,
   favoriteOffers: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
@@ -40,7 +42,7 @@ const initialState: InitialState = {
   isNearbyOfferDataLoading: true,
   isFavoriteOffersLoading: true,
   isFavoriteOffersSave: true,
-  isReviewsDataLoading: true,
+  isReviewsDataLoading: false,
 };
 
 
@@ -84,6 +86,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(addReview, (state, action) => {
       state.reviews.push(action.payload);
+      state.reviewSuccess = true;
     })
     .addCase(loadNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;

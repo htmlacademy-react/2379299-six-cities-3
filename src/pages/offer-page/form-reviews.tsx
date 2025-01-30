@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { COUNT_STAR } from '../../ mocks/const';
@@ -11,9 +11,18 @@ type Props = {
 function FormReviewsRew({id}: Props):JSX.Element{
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
-  const [dataStar, setDataStar] = useState<number>(0);
+  const [dataStar, setDataStar] = useState<number>();
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const loadingStatusReviews = useAppSelector((state) => state.isReviewsDataLoading);
+  const reviewSuccess = useAppSelector((state) => state.reviewSuccess);
+
+  useEffect(() => {
+    if (reviewSuccess) {
+      setDataReviews('');
+      setDataStar(undefined);
+    }
+  }, [reviewSuccess]);
+
 
   function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
