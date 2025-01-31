@@ -38,6 +38,7 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
   },
 );
 
+
 export const fetchOfferAction = createAsyncThunk<void, string, {
   dispatch: AppDispatch;
   state: State;

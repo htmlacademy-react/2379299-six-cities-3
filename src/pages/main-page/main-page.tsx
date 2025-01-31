@@ -2,36 +2,20 @@ import OfferCard from '../../components/offer-card/offer-card.tsx';
 import Map from '../../components/map/map.tsx';
 import { useAppSelector } from '../../hooks/index.ts';
 import ListCities from '../../components/list-cities/list-cities.tsx';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import SortOffers from './sort-offers.tsx';
 import { cities } from '../../helpers/const.ts';
 import { PointForMap } from '../../types/point-for-map.ts';
 import { SetupForMap } from '../../types/setup-for-map.ts';
+import { selectOffersByCity } from './selectors.ts';
 
 function MainPage(): JSX.Element{
-  const currentCity = useAppSelector((state) => state.city.currentCity);
-  const currentOffers = useAppSelector((state) => state.offers.offers.filter((offer) => offer.city.name === state.city.currentCity));
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);
-  const sortedOffers = useMemo(() => {
-    if (currentOffers.length > 0){
-      const offersCopy = [...currentOffers];
-      switch (activeSort) {
-        case 'Price: low to high':
-          return offersCopy.sort((a, b) => a.price - b.price);
-        case 'Price: high to low':
-          return offersCopy.sort((a, b) => b.price - a.price);
-        case 'Top rated first':
-          return offersCopy.sort((a, b) => b.rating - a.rating);
-        case 'Popular':
-        default:
-          return offersCopy;
-      }
-    }else{
-      return [];
-    }
-  }, [activeSort, currentOffers]);
+
+  const currentCity = useAppSelector((state) => state.city.currentCity);
+  const currentOffers = useAppSelector((state) => selectOffersByCity(state.offers, currentCity, activeSort));
 
   const pointsForMap: PointForMap[] = currentOffers?.map((offer) => ({
     lat: offer.location.latitude,
@@ -82,7 +66,7 @@ function MainPage(): JSX.Element{
 
                 </form>
                 <div className="cities__places-list places__list tabs__content">
-                  {sortedOffers.map((offer) =>
+                  {currentOffers.map((offer) =>
                     <OfferCard key={offer.id} offer={offer} onSetActiveOffer={setActiveOffer}/>)}
                 </div>
               </section>
