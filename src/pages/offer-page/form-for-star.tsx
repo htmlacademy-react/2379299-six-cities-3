@@ -7,12 +7,12 @@ type Star = {
 
 type Props = {
   star: Star ;
-  setDataStar: (value: number) => void;
+  onSetDataStar: (value: number) => void;
   dataStar:number | undefined;
   loadingStatusReviews: boolean;
 }
 
-function FormForStarRew({loadingStatusReviews, star, setDataStar, dataStar}:Props):JSX.Element{
+function FormForStarRaw({loadingStatusReviews, star, onSetDataStar, dataStar}:Props):JSX.Element{
 
   return(
     <Fragment key={star.value}>
@@ -21,7 +21,7 @@ function FormForStarRew({loadingStatusReviews, star, setDataStar, dataStar}:Prop
         id={`${star.value}-stars`}
         type="radio"
         onClick={() => {
-          setDataStar(star.value);
+          onSetDataStar(star.value);
         }}
         checked={star.value === dataStar}
         disabled={loadingStatusReviews}
@@ -39,6 +39,6 @@ function FormForStarRew({loadingStatusReviews, star, setDataStar, dataStar}:Prop
   );
 }
 
-const FormForStar = memo(FormForStarRew);
+const FormForStar = memo(FormForStarRaw);
 export default FormForStar;
 

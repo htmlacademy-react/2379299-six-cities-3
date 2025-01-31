@@ -4,7 +4,7 @@ import { memo } from 'react';
 import Header from './header';
 import { useAppSelector } from '../../hooks';
 
-function LayoutRew():JSX.Element{
+function LayoutRaw():JSX.Element{
 
   const location = useLocation();
   const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
@@ -51,5 +51,5 @@ function LayoutRew():JSX.Element{
     </div>
   );
 }
-const Layout = memo(LayoutRew);
+const Layout = memo(LayoutRaw);
 export default Layout;

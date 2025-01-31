@@ -77,13 +77,13 @@ function MainPage(): JSX.Element{
                     </svg>
                   </span>
                   {
-                    isShow ? <SortOffers activeSort={activeSort} setActiveSort={setActiveSort} setIsShow={setIsShow}/> : null
+                    isShow ? <SortOffers activeSort={activeSort} onSortChange={setActiveSort} onClose={() => setIsShow(false)}/> : null
                   }
 
                 </form>
                 <div className="cities__places-list places__list tabs__content">
                   {sortedOffers.map((offer) =>
-                    <OfferCard key={offer.id} offer={offer} setActiveOffer={setActiveOffer}/>)}
+                    <OfferCard key={offer.id} offer={offer} onSetActiveOffer={setActiveOffer}/>)}
                 </div>
               </section>
               <div className="cities__right-section">

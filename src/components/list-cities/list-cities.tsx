@@ -7,7 +7,7 @@ type Props = {
   city: string;
 }
 
-function ListCitiesRew({city}:Props):JSX.Element{
+function ListCitiesRaw({city}:Props):JSX.Element{
 
   const dispatch = useAppDispatch();
 
@@ -29,5 +29,5 @@ function ListCitiesRew({city}:Props):JSX.Element{
     </li>
   );
 }
-const ListCities = memo(ListCitiesRew);
+const ListCities = memo(ListCitiesRaw);
 export default ListCities;

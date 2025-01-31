@@ -1,54 +1,59 @@
-import { memo, useEffect, useState } from 'react';
-import { saveReviews } from '../../store/api-action';
+import { memo, useState } from 'react';
+import { clearErrorAction, saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import FormForStar from './form-for-star';
 import { AuthorizationStatus, TEXT_LENGTH } from '../../components/const';
 import { COUNT_STAR } from '../../helpers/const';
+import { resetReviewSuccess, setError } from '../../store/action';
 
 type Props = {
   id: string;
 }
-function FormReviewsRew({id}: Props):JSX.Element{
+function FormReviewsRaw({id}: Props):JSX.Element{
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
   const [dataStar, setDataStar] = useState<number>();
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const loadingStatusReviews = useAppSelector((state) => state.isReviewsDataLoading);
-  const reviewSuccess = useAppSelector((state) => state.reviewSuccess);
-
-  useEffect(() => {
-    if (reviewSuccess) {
-      setDataReviews('');
-      setDataStar(undefined);
-    }
-  }, [reviewSuccess]);
-
 
   function onHandleChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
     setDataReviews(evt.target.value);
   }
-  function handleSubmit(evt:React.FormEvent<HTMLFormElement>){
+  async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
     if (dataStar && id && dataStar !== 0) {
-      dispatch(saveReviews({
-        offerId: id,
-        comment:dataReviews,
-        rating:dataStar
-      }));
+      try {
+        await dispatch(saveReviews({
+          offerId: id,
+          comment: dataReviews,
+          rating: dataStar
+        })).unwrap();
+        setDataReviews('');
+        setDataStar(undefined);
+        dispatch(resetReviewSuccess());
+      } catch (error) {
+        dispatch(setError('Ошибка при отправке отзыва'));
+        dispatch(clearErrorAction());
+      }
     }
   }
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e);
+  };
 
   return(
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={handleSubmit}
+      onSubmit={handleFormSubmit}
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        {COUNT_STAR.map((star) => <FormForStar loadingStatusReviews={loadingStatusReviews} dataStar={dataStar} star={star} key={star.value} setDataStar={setDataStar}/>)}
+        {COUNT_STAR.map((star) => <FormForStar loadingStatusReviews={loadingStatusReviews} dataStar={dataStar} star={star} key={star.value} onSetDataStar={setDataStar}/>)}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
@@ -75,5 +80,5 @@ function FormReviewsRew({id}: Props):JSX.Element{
     </form>
   );
 }
-const FormReviews = memo(FormReviewsRew);
+const FormReviews = memo(FormReviewsRaw);
 export default FormReviews;

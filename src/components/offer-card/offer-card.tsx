@@ -7,53 +7,57 @@ import { AppRoute, AuthorizationStatus } from '../const';
 
 type Props = {
   offer: Offer;
-  setActiveOffer?:(isActiveOffer: string) => void;
-}
+  onSetActiveOffer?: (id: string) => void;
+};
 
-function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
+const RATING_MULTIPLIER = 20;
+
+function OfferCardRaw({ offer, onSetActiveOffer }: Props): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const {title, price, isPremium, type, previewImage, rating} = offer;
-  const ratingOffer = Math.round(rating);
+  const { id, title, price, isPremium, type, previewImage, rating, isFavorite } = offer;
+  const ratingOffer = Math.round(rating) * RATING_MULTIPLIER;
   const navigate = useNavigate();
-  function hendleMouseEnter(){
-    if(setActiveOffer){
-      setActiveOffer(offer.id);
-    }
-  }
-  function hendleMouseLeave(){
-    if(setActiveOffer){
-      setActiveOffer('');
-    }
-  }
-
   const dispatch = useAppDispatch();
-  const handleClick = () => {
-    if(authorizationStatus !== AuthorizationStatus.Auth){
-      navigate(AppRoute.Login);
-    }else{
-      dispatch(
-        saveFavoriteOffers({
-          offerId: offer.id,
-          status: offer.isFavorite,
-        }));
+
+  const handleMouseEnter = () => {
+    if (onSetActiveOffer) {
+      onSetActiveOffer(id);
     }
   };
 
-  return(
+  const handleMouseLeave = () => {
+    if (onSetActiveOffer) {
+      onSetActiveOffer('');
+    }
+  };
+
+  const handleClick = () => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.Login);
+    } else {
+      dispatch(
+        saveFavoriteOffers({
+          offerId: id,
+          status: isFavorite,
+        })
+      );
+    }
+  };
+
+  return (
     <article
       className="cities__card place-card"
-      onMouseEnter = {hendleMouseEnter}
-      onMouseLeave = {hendleMouseLeave}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
-      {
-        isPremium ?
-          <div className="place-card__mark">
-            <span>Premium</span>
-          </div> : null
-      }
+      {isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${offer.id}`}>
+        <Link to={`/offer/${id}`}>
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image" />
         </Link>
       </div>
@@ -64,9 +68,9 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : '' }`}
+            className={`place-card__bookmark-button button ${isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
-            onClick={ handleClick}
+            onClick={handleClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>
@@ -76,20 +80,18 @@ function OfferCardRew({offer, setActiveOffer}:Props):JSX.Element{
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${ratingOffer * 20}%`}}></span>
+            <span style={{ width: `${ratingOffer}%` }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
-        <h2
-          className="place-card__name"
-        >
-          <Link to={`/offer/${offer.id}`}>{title}</Link>
+        <h2 className="place-card__name">
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
 }
-const OfferCard = memo(OfferCardRew);
-export default OfferCard;
 
+const OfferCard = memo(OfferCardRaw);
+export default OfferCard;

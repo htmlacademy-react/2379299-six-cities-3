@@ -8,7 +8,7 @@ type Props = {
   offer: Offer;
 }
 
-function FavoritCardRew({ offer }: Props): JSX.Element {
+function FavoritCardRaw({ offer }: Props): JSX.Element {
   const { title, price, type, previewImage, rating, id } = offer;
   const dispatch = useAppDispatch();
   const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
@@ -74,5 +74,5 @@ function FavoritCardRew({ offer }: Props): JSX.Element {
   );
 }
 
-const FavoritCard = memo(FavoritCardRew);
+const FavoritCard = memo(FavoritCardRaw);
 export default FavoritCard;

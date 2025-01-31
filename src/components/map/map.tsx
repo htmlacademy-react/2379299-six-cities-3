@@ -14,7 +14,7 @@ type Props = {
   className: string;
 }
 
-function MapRew({pointsForMap, className, activeOffer, setupForMap}: Props) {
+function MapRaw({pointsForMap, className, activeOffer, setupForMap}: Props) {
 
   const mapRef = useRef<HTMLDivElement>(null);
   const map = useMap(mapRef, setupForMap);
@@ -49,5 +49,5 @@ function MapRew({pointsForMap, className, activeOffer, setupForMap}: Props) {
     <section className={className} ref={mapRef} />
   );
 }
-const Map = memo(MapRew);
+const Map = memo(MapRaw);
 export default Map;

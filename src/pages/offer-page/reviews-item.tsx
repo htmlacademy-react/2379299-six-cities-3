@@ -6,7 +6,7 @@ type Props={
   review: Reviews;
 }
 
-function ReviewsItemRew({review}:Props):JSX.Element{
+function ReviewsItemRaw({review}:Props):JSX.Element{
 
   const {user, comment, date, rating} = review;
 
@@ -39,6 +39,6 @@ function ReviewsItemRew({review}:Props):JSX.Element{
   );
 }
 
-const ReviewsItem = memo(ReviewsItemRew);
+const ReviewsItem = memo(ReviewsItemRaw);
 export default ReviewsItem;
 
