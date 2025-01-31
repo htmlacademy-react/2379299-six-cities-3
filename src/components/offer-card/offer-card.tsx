@@ -13,7 +13,7 @@ type Props = {
 const RATING_MULTIPLIER = 20;
 
 function OfferCardRaw({ offer, onSetActiveOffer }: Props): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
   const { id, title, price, isPremium, type, previewImage, rating, isFavorite } = offer;
   const ratingOffer = Math.round(rating) * RATING_MULTIPLIER;
   const navigate = useNavigate();

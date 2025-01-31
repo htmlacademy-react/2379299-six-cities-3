@@ -10,9 +10,9 @@ type Props = {
 
 function HeaderRew({isShowUserDate}: Props):JSX.Element{
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const userData = useAppSelector((state) => state.userData);
-  const favoriteOffers = useAppSelector((state) => state.favoriteOffers);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
+  const userData = useAppSelector((state) => state.user.userData);
+  const favoriteOffers = useAppSelector((state) => state.offers.favoriteOffers);
   const dispatch = useAppDispatch();
   const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
     evt.preventDefault();

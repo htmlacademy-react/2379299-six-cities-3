@@ -9,8 +9,8 @@ import { PointForMap } from '../../types/point-for-map.ts';
 import { SetupForMap } from '../../types/setup-for-map.ts';
 
 function MainPage(): JSX.Element{
-  const currentCity = useAppSelector((state) =>state.currentCity);
-  const currentOffers = useAppSelector((state) => state.offers.filter((offer) => offer.city.name === state.currentCity));
+  const currentCity = useAppSelector((state) => state.city.currentCity);
+  const currentOffers = useAppSelector((state) => state.offers.offers.filter((offer) => offer.city.name === state.city.currentCity));
   const [activeOffer, setActiveOffer] = useState<string>('');
   const [activeSort, setActiveSort] = useState<string>('Popular');
   const [isShow, setIsShow] = useState<boolean>(false);

@@ -11,7 +11,7 @@ type Props = {
 function FavoritCardRaw({ offer }: Props): JSX.Element {
   const { title, price, type, previewImage, rating, id } = offer;
   const dispatch = useAppDispatch();
-  const loadingStatusSave = useAppSelector((state) => state.isFavoriteOffersSave);
+  const loadingStatusSave = useAppSelector((state) => state.loading.isFavoriteOffersSave);
   const ratingPercent = `${Math.round(rating) * 20}%`;
 
   const handleClick = () => {

@@ -14,8 +14,8 @@ import { fetchFavoriteOffers } from '../../store/api-action';
 
 function App(): JSX.Element{
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.loading.isOffersDataLoading);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

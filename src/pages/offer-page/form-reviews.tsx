@@ -13,8 +13,8 @@ function FormReviewsRaw({id}: Props):JSX.Element{
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
   const [dataStar, setDataStar] = useState<number>();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const loadingStatusReviews = useAppSelector((state) => state.isReviewsDataLoading);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
+  const loadingStatusReviews = useAppSelector((state) => state.loading.isReviewsDataLoading);
 
   function onHandleChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();

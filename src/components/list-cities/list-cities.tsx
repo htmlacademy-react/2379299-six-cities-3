@@ -15,7 +15,7 @@ function ListCitiesRaw({city}:Props):JSX.Element{
 
     dispatch(changeCurrentCity({currentCity:city}));
   }
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const currentCity = useAppSelector((state) => state.city.currentCity);
 
   return(
     <li className="locations__item">

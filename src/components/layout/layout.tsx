@@ -7,7 +7,7 @@ import { useAppSelector } from '../../hooks';
 function LayoutRaw():JSX.Element{
 
   const location = useLocation();
-  const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
+  const allFavoritesOffers = useAppSelector((state) => state.offers.favoriteOffers);
   let text = 'text';
   let footerPage = false;
   let isShowUserDate;

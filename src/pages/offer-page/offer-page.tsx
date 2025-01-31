@@ -27,12 +27,12 @@ function OfferPage():JSX.Element{
     }
   },[prodId, dispatch]);
 
-  const loadingStatus = useAppSelector((state) => state.isOfferDataLoading);
-  const loadingStatusNearby = useAppSelector((state) => state.isNearbyOfferDataLoading);
-  const currentOffer = useAppSelector((state) => state.offer);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const reviews = useAppSelector((state) => state.reviews);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
+  const loadingStatus = useAppSelector((state) => state.loading.isOfferDataLoading);
+  const loadingStatusNearby = useAppSelector((state) => state.loading.isNearbyOfferDataLoading);
+  const currentOffer = useAppSelector((state) => state.offers.offer);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
+  const reviews = useAppSelector((state) => state.user.reviews);
+  const nearbyOffers = useAppSelector((state) => state.offers.nearbyOffers).slice(0,3);
   const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
   const navigate = useNavigate();
 
