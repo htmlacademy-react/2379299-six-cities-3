@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import FormForStar from './form-for-star';
 import { AuthorizationStatus, TEXT_LENGTH } from '../../components/const';
 import { COUNT_STAR } from '../../helpers/const';
-import { resetReviewSuccess, setError } from '../../store/action';
+import { setError } from '../../store/action';
 
 type Props = {
   id: string;
@@ -17,13 +17,10 @@ function FormReviewsRaw({id}: Props):JSX.Element{
   const loadingStatusReviews = useAppSelector((state) => state.loading.isReviewsDataLoading);
   const reviewSuccess = useAppSelector((state) => state.user.reviewSuccess);
 
-  console.log(111, reviewSuccess,dataReviews,); // Логирование для отладки
 
   useEffect(() => {
     if (reviewSuccess) {
-      console.log(22222222, reviewSuccess,dataReviews,); // Логирование для отладки
       setDataReviews('');
-      console.log(333333333, reviewSuccess,dataReviews); // Логирование для отладки
       setDataStar(undefined);
     }
   }, [reviewSuccess]);

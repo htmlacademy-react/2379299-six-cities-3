@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addReview, getUserData, loadReviews, resetReviewSuccess } from '../../action';
+import { addReview, getUserData, loadReviews } from '../../action';
 import { Reviews } from '../../../types/reviews';
 import { UserData } from '../../../types/user-data';
 
@@ -29,9 +29,6 @@ export const userReducer = createSlice({
       .addCase(addReview, (state, action) => {
         state.reviews.push(action.payload);
         state.reviewSuccess = true;
-      })
-      .addCase(resetReviewSuccess, (state) => {
-        state.reviewSuccess = false;
       });
   },
 });
