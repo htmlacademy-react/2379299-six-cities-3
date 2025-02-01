@@ -1,20 +1,33 @@
-
-import { createSelector, OutputSelector } from 'reselect';
+import { createSelector, Selector } from 'reselect';
 import { Offer, Offers } from '../../types/offer';
+import type { State } from '../../types/state';
 
+const stateOffers: Selector<State, Offers> = (state: State): Offers =>
+  state.offers;
 
-interface RootState {
-  offers: Offers;
-}
+const stateCity: Selector<State, string, [string]> = (
+  state: State,
+  city: string
+): string => city;
+const stateSort: Selector<State, string, [string, string]> = (
+  state: State,
+  city: string,
+  sort: string
+): string => sort;
 
-const selectOffersByCity: OutputSelector<RootState, string, string, Offers> = createSelector(
+const selectOffersByCity = createSelector<
   [
-    (state: RootState): Offers => state.offers,
-    (state: RootState, city: string): string => city,
-    (state: RootState, city: string, sort: string): string => sort,
+    Selector<State, Offers>,
+    Selector<State, string, [string]>,
+    Selector<State, string, [string, string]>
   ],
+  Offers
+>(
+  [stateOffers, stateCity, stateSort],
   (offers: Offers, city: string, sort: string): Offers => {
-    const offersByCity =  offers.filter((offer: Offer) => offer.city.name === city);
+    const offersByCity = offers.filter(
+      (offer: Offer) => offer.city.name === city
+    );
 
     switch (sort) {
       case 'Price: low to high':
@@ -31,5 +44,3 @@ const selectOffersByCity: OutputSelector<RootState, string, string, Offers> = cr
 );
 
 export { selectOffersByCity };
-
-// https://stackoverflow.com/questions/40291084/use-reselect-selector-with-parameters

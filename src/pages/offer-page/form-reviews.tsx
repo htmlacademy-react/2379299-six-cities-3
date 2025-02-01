@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { clearErrorAction, saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import FormForStar from './form-for-star';
@@ -15,6 +15,18 @@ function FormReviewsRaw({id}: Props):JSX.Element{
   const [dataStar, setDataStar] = useState<number>();
   const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
   const loadingStatusReviews = useAppSelector((state) => state.loading.isReviewsDataLoading);
+  const reviewSuccess = useAppSelector((state) => state.user.reviewSuccess);
+
+  console.log(111, reviewSuccess,dataReviews,); // Логирование для отладки
+
+  useEffect(() => {
+    if (reviewSuccess) {
+      console.log(22222222, reviewSuccess,dataReviews,); // Логирование для отладки
+      setDataReviews('');
+      console.log(333333333, reviewSuccess,dataReviews); // Логирование для отладки
+      setDataStar(undefined);
+    }
+  }, [reviewSuccess]);
 
   function onHandleChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
     evt.preventDefault();
@@ -29,10 +41,6 @@ function FormReviewsRaw({id}: Props):JSX.Element{
           comment: dataReviews,
           rating: dataStar
         }));
-
-        setDataReviews('');
-        setDataStar(undefined);
-        // dispatch(resetReviewSuccess());
       } catch (error) {
         dispatch(setError('Ошибка при отправке отзыва'));
         dispatch(clearErrorAction());
