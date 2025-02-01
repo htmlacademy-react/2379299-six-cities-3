@@ -23,7 +23,7 @@ function FormForStarRaw({loadingStatusReviews, star, onSetDataStar, dataStar}:Pr
         onClick={() => {
           onSetDataStar(star.value);
         }}
-        checked={star.value === dataStar}
+        defaultChecked={star.value === dataStar}
         disabled={loadingStatusReviews}
       />
       <label

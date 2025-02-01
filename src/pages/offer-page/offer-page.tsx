@@ -1,4 +1,4 @@
-import FormComments from './form-reviews';
+import FormReviews from './form-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -36,7 +36,7 @@ function OfferPage():JSX.Element{
   const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
   const navigate = useNavigate();
 
-  if (loadingStatus || loadingStatusNearby || !currentOffer || loadingStatus){
+  if (loadingStatus || loadingStatusNearby){
 
     return <LoadingScreen />;
   }
@@ -161,7 +161,7 @@ function OfferPage():JSX.Element{
               <ul className="reviews__list">
                 {sortingReviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
               </ul>
-              {authorizationStatus === AuthorizationStatus.Auth && (<FormComments id={id} />)}
+              {authorizationStatus === AuthorizationStatus.Auth && (<FormReviews id={id} />)}
             </section>
           </div>
         </div>

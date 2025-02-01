@@ -1,4 +1,4 @@
-import leaflet from 'leaflet';
+import leaflet, { LayerGroup } from 'leaflet';
 import useMap from '../hooks/use-map';
 import 'leaflet/dist/leaflet.css';
 import { memo, useEffect, useRef } from 'react';
@@ -30,7 +30,23 @@ function MapRaw({pointsForMap, className, activeOffer, setupForMap}: Props) {
     iconAnchor: [13.5, 39],
   });
 
+  const markerLayer = useRef<LayerGroup>(new leaflet.LayerGroup());
+
   useEffect(() => {
+    if (map && setupForMap) {
+      map.setView([setupForMap?.lat, setupForMap?.long], setupForMap?.zoom);
+      markerLayer.current.addTo(map);
+      const currentMarkerLayer = markerLayer.current;
+      return () => {
+        currentMarkerLayer.remove();
+      };
+    }
+  }, [map,setupForMap]);
+
+  useEffect(() => {
+
+    markerLayer.current.clearLayers();
+
     if (map) {
       pointsForMap.forEach((offer) => {
         leaflet
@@ -40,7 +56,7 @@ function MapRaw({pointsForMap, className, activeOffer, setupForMap}: Props) {
           }, {
             icon: offer.id === activeOffer ? currentCustomIcon : defaultCustomIcon ,
           })
-          .addTo(map);
+          .addTo(markerLayer.current);
       });
     }
   }, [map, pointsForMap, defaultCustomIcon, activeOffer, currentCustomIcon]);

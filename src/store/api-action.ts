@@ -78,7 +78,7 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
   async (offerId, {dispatch, extra: api}) => {
     dispatch(setNearbyOfferDataLoadingStatus(true));
     try{
-      const {data} = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
+      const {data} = await api.get<Offers>(`${APIRoute.Offers}/1${offerId}/nearby`);
       dispatch(loadNearbyOffers(data));
     }catch{
       dispatch(setError('Failed to load nearby offer data'));

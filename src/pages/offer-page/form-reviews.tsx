@@ -28,10 +28,11 @@ function FormReviewsRaw({id}: Props):JSX.Element{
           offerId: id,
           comment: dataReviews,
           rating: dataStar
-        })).unwrap();
+        }));
+
         setDataReviews('');
         setDataStar(undefined);
-        dispatch(resetReviewSuccess());
+        // dispatch(resetReviewSuccess());
       } catch (error) {
         dispatch(setError('Ошибка при отправке отзыва'));
         dispatch(clearErrorAction());
