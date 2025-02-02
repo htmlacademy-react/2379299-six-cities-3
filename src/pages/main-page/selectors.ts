@@ -6,12 +6,12 @@ const stateOffers: Selector<State, Offer[]> = (state: State): Offer[] =>
   state.offers.offers;
 
 const stateCity: Selector<State, string, [string]> = (
-  state: State,
+  _state: State,
   city: string
 ): string => city;
 const stateSort: Selector<State, string, [string, string]> = (
-  state: State,
-  city: string,
+  _state: State,
+  _city: string,
   sort: string
 ): string => sort;
 

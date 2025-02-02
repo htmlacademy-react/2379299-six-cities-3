@@ -1,12 +1,12 @@
-import { FormEvent, useEffect, useRef } from 'react';
+import { FormEvent, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
 import { clearErrorAction, loginAction } from '../../store/api-action';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { changeCurrentCity, setError } from '../../store/action';
 import { cities } from '../../helpers/const';
 import { getRandomValue } from '../../helpers/utils';
-import { AppRoute, AuthorizationStatus } from '../../components/const';
+import { AppRoute} from '../../components/const';
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
