@@ -4,36 +4,42 @@ import { memo } from 'react';
 import Header from './header';
 import { useAppSelector } from '../../hooks';
 
-function LayoutRew():JSX.Element{
+function LayoutRaw():JSX.Element{
 
   const location = useLocation();
-  const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
+  const allFavoritesOffers = useAppSelector((state) => state.offers.favoriteOffers);
   let text = 'text';
   let footerPage = false;
+  let isShowUserDate;
   switch (location.pathname) {
     case AppRoute.Main:
       text = 'page--gray page--main';
       footerPage = false;
+      isShowUserDate = true;
       break;
     case AppRoute.Login:
       text = 'page--gray page--login';
       footerPage = false;
+      isShowUserDate = false;
       break;
     case AppRoute.Favorites:
       if (allFavoritesOffers.length > 0){
         text = '';
       }else{
         text = 'page--favorites-empty';
+
       }
       footerPage = true;
+      isShowUserDate = true;
       break;
     default:
+      isShowUserDate = true;
       break;
   }
 
   return(
     <div className={`page ${text}`}>
-      <Header />
+      <Header isShowUserDate={isShowUserDate} isLogoActive={location.pathname === AppRoute.Main}/>
       <Outlet />
 
       {footerPage && (
@@ -46,5 +52,5 @@ function LayoutRew():JSX.Element{
     </div>
   );
 }
-const Layout = memo(LayoutRew);
+const Layout = memo(LayoutRaw);
 export default Layout;

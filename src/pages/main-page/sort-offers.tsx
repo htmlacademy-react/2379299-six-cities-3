@@ -1,31 +1,34 @@
-
 import { memo } from 'react';
 import { SortType } from '../../components/const';
 
 type Props = {
-  setActiveSort: (sort:string) => void;
-  setIsShow: (sort:boolean) => void;
-}
+  onSortChange: (sort: string) => void;
+  onClose: () => void;
+  activeSort: string;
+  isShow: boolean;
+};
 
+function SortOffersRaw({ activeSort, onSortChange, onClose, isShow }: Props): JSX.Element | null {
+  const handleSortClick = (sort: string) => {
+    onSortChange(sort);
+    onClose();
+  };
 
-function SortOffersRew({setActiveSort, setIsShow}: Props):JSX.Element{
-
-  return(
-    <ul className="places__options places__options--custom places__options--opened">
+  return (
+    <ul className={`places__options places__options--custom  ${!isShow ? 'visually-hidden' : 'places__options--opened'}`}>
       {SortType.map((sort) => (
         <li
-          className="places__option places__option--active"
+          className={`places__option ${activeSort === sort ? 'places__option--active' : ''}`}
           key={sort}
           tabIndex={0}
-          onClick={() => {
-            setActiveSort(sort);
-            setIsShow(false);
-          }}
-        >{sort}
+          onClick={() => handleSortClick(sort)}
+        >
+          {sort}
         </li>
       ))}
     </ul>
   );
 }
-const SortOffers = memo(SortOffersRew);
+
+const SortOffers = memo(SortOffersRaw);
 export default SortOffers;

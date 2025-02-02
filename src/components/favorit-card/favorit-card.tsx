@@ -1,39 +1,43 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { saveFavoriteOffers } from '../../store/api-action';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import { useAppDispatch } from '../../hooks';
 
 type Props = {
   offer: Offer;
 }
 
-function FavoritCardRew({offer}:Props):JSX.Element{
-  const [show, setShow] = useState<boolean>(true);
-  const {title, price, type,} = offer;
+function FavoritCardRaw({ offer }: Props): JSX.Element | null {
+  const { title, price, type, previewImage, rating, id } = offer;
   const dispatch = useAppDispatch();
-  const handlerClick = (id: string) => {
-    setShow(false);
+  const ratingPercent = `${Math.round(rating) * 20}%`;
+
+  const handleClick = () => {
     dispatch(
       saveFavoriteOffers({
         offerId: id,
-        status: Number(!offer.isFavorite)
+        status: offer.isFavorite,
       })
     );
   };
 
-  if (!show){
-    return <> </>;
-  }
-
-  return(
+  return (
     <article className="favorites__card place-card">
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
+      {offer.isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to="#">
-          <img className="place-card__image" src="img/apartment-small-03.jpg" width="150" height="110" alt="Place image" />
+        <Link to={`/offer/${id}`}>
+          <img
+            className="place-card__image"
+            src={previewImage}
+            width="150"
+            height="110"
+            alt="Place image"
+          />
         </Link>
       </div>
       <div className="favorites__card-info place-card__info">
@@ -43,9 +47,9 @@ function FavoritCardRew({offer}:Props):JSX.Element{
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
           <button
-            className="place-card__bookmark-button place-card__bookmark-button--active button"
+            className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
-            onClick={() => handlerClick(offer.id)}
+            onClick={handleClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>
@@ -55,17 +59,18 @@ function FavoritCardRew({offer}:Props):JSX.Element{
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: '100%'}}></span>
+            <span style={{ width: ratingPercent }}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to="#">{title}</Link>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
     </article>
   );
 }
-const FavoritCard = memo(FavoritCardRew);
+
+const FavoritCard = memo(FavoritCardRaw);
 export default FavoritCard;

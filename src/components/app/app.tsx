@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes} from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import MainPage from '../../pages/main-page/main-page';
 import Favorites from '../../pages/favorites-page/favorites-page';
 import Login from '../../pages/login-page/login-page';
@@ -10,54 +10,38 @@ import PrivateRoute from '../private-route/private-route';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
-function App(): JSX.Element{
+function App(): JSX.Element {
+  const authorizationStatus = useAppSelector(
+    (state) => state.loading.authorizationStatus
+  );
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const isQuestionsDataLoading = useAppSelector((state) => state.isOffersDataLoading);
-  if (authorizationStatus === AuthorizationStatus.Unknown || isQuestionsDataLoading) {
-    return (
-      <LoadingScreen />
-    );
+  if (authorizationStatus === AuthorizationStatus.Unknown) {
+    return <LoadingScreen />;
   }
 
-  return(
+  return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout/>} >
+        <Route path="/" element={<Layout />}>
+          <Route index path={AppRoute.Main} element={<MainPage />} />
           <Route
-            index
-            path = {AppRoute.Main}
-            element = {<MainPage />}
-          />
-          <Route
-            path = {AppRoute.Login}
-            element = {
-              <PrivateRoute
-                authorizationStatus={authorizationStatus}
-                isReverse
-              >
+            path={AppRoute.Login}
+            element={
+              <PrivateRoute authorizationStatus={authorizationStatus} isReverse>
                 <Login />
               </PrivateRoute>
             }
           />
           <Route
-            path = {AppRoute.Favorites}
-            element = {
+            path={AppRoute.Favorites}
+            element={
               <PrivateRoute authorizationStatus={authorizationStatus}>
                 <Favorites />
               </PrivateRoute>
             }
           />
-          <Route
-            path = {AppRoute.Offer}
-            element = {
-              <OfferPage />
-            }
-          />
-          <Route
-            path = "*"
-            element = {<NotFoundPage/>}
-          />
+          <Route path={AppRoute.Offer} element={<OfferPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

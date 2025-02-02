@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import FavoritCard from '../../components/favorit-card/favorit-card';
 import { useAppSelector } from '../../hooks';
-import { cities } from '../../ mocks/const';
+import { cities } from '../../helpers/const';
 
 function FavoritesPage():JSX.Element{
-  const allFavoritesOffers = useAppSelector((state) => state.favoriteOffers);
+  const allFavoritesOffers = useAppSelector((state) => state.offers.favoriteOffers);
 
   return(
     <main className={`page__main page__main--favorites ${allFavoritesOffers.length > 0 ? '' : 'page__main--favorites-empty'}`}>

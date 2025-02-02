@@ -7,27 +7,27 @@ type Props = {
   city: string;
 }
 
-function ListCitiesRew({city}:Props):JSX.Element{
+function ListCitiesRaw({city}:Props):JSX.Element{
 
   const dispatch = useAppDispatch();
 
-  function onHandlerClick(){
+  function onHandleClick(){
 
     dispatch(changeCurrentCity({currentCity:city}));
   }
-  const currentCity = useAppSelector((state) => state.currentCity);
+  const currentCity = useAppSelector((state) => state.city.currentCity);
 
   return(
     <li className="locations__item">
       <Link
         className={`locations__item-link  ${city === currentCity ? 'tabs__item--active' : 'tabs__item'}`}
         to="#"
-        onClick={onHandlerClick}
+        onClick={onHandleClick}
       >
         <span>{city}</span>
       </Link>
     </li>
   );
 }
-const ListCities = memo(ListCitiesRew);
+const ListCities = memo(ListCitiesRaw);
 export default ListCities;

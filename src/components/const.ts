@@ -24,6 +24,8 @@ export const URL_MARKER_CURRENT = 'img/pin-active.svg';
 export const SortType = ['Popular', 'Price: low to high', 'Price: high to low', 'Top rated first'];
 export const TIMEOUT_SHOW_ERROR = 2000;
 export const MAX_COUNT_REVIEWS = 10;
-export const MAXIMUM_TEXT_LENGTH = 300;
-export const MINIMUM_TEXT_LENGTH = 50;
+export const TEXT_LENGTH = {
+  MAXIMUM: 300,
+  MINIMUM: 50,
+};
 

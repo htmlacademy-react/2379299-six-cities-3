@@ -1,67 +1,114 @@
-import { memo, useState } from 'react';
-import { saveReviews } from '../../store/api-action';
+import { memo, useEffect, useState } from 'react';
+import { clearErrorAction, saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { COUNT_STAR } from '../../ mocks/const';
 import FormForStar from './form-for-star';
-import { AuthorizationStatus, MAXIMUM_TEXT_LENGTH, MINIMUM_TEXT_LENGTH } from '../../components/const';
+import { AuthorizationStatus, TEXT_LENGTH } from '../../components/const';
+import { COUNT_STAR } from '../../helpers/const';
+import { removeSuccess, setError } from '../../store/action';
 
 type Props = {
   id: string;
-}
-function FormReviewsRew({id}: Props):JSX.Element{
+};
+function FormReviewsRaw({ id }: Props): JSX.Element {
   const dispatch = useAppDispatch();
   const [dataReviews, setDataReviews] = useState<string>('');
-  const [dataStar, setDataStar] = useState<number>(0);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const [dataStar, setDataStar] = useState<number>();
+  const authorizationStatus = useAppSelector(
+    (state) => state.loading.authorizationStatus
+  );
+  const loadingStatusReviews = useAppSelector(
+    (state) => state.loading.isReviewsDataLoading
+  );
+  const reviewSuccess = useAppSelector((state) => state.user.reviewSuccess);
 
-  function onHandlerChange(evt: React.ChangeEvent<HTMLTextAreaElement>){
+  useEffect(() => {
+    if (reviewSuccess) {
+      setDataReviews('');
+      setDataStar(undefined);
+    }
+  }, [reviewSuccess]);
+
+  function onHandleChange(evt: React.ChangeEvent<HTMLTextAreaElement>) {
     evt.preventDefault();
     setDataReviews(evt.target.value);
   }
-  function handlerSubmit(evt:React.FormEvent<HTMLFormElement>){
+  async function handleSubmit(evt: React.FormEvent<HTMLFormElement>) {
     evt.preventDefault();
-    dispatch(saveReviews({
-      offerId: id,
-      comment:dataReviews,
-      rating:dataStar
-    }));
-    evt.currentTarget.reset();
+    if (dataStar && id && dataStar !== 0) {
+      try {
+        await dispatch(
+          saveReviews({
+            offerId: id,
+            comment: dataReviews,
+            rating: dataStar,
+          })
+        );
+        dispatch(removeSuccess());
+      } catch (error) {
+        dispatch(setError('Ошибка при отправке отзыва'));
+        dispatch(clearErrorAction());
+      }
+    }
   }
 
-  return(
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSubmit(e);
+  };
+
+  return (
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={handlerSubmit}
+      onSubmit={handleFormSubmit}
     >
-      <label className="reviews__label form__label" htmlFor="review">Your review</label>
+      <label className="reviews__label form__label" htmlFor="review">
+        Your review
+      </label>
       <div className="reviews__rating-form form__rating">
-        {COUNT_STAR.map((star) => <FormForStar dataStar={dataStar} star={star} key={star.value} setDataStar={setDataStar}/>)}
+        {COUNT_STAR.map((star) => (
+          <FormForStar
+            loadingStatusReviews={loadingStatusReviews}
+            dataStar={dataStar}
+            star={star}
+            key={star.value}
+            onSetDataStar={setDataStar}
+          />
+        ))}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
-        onChange={onHandlerChange}
-        maxLength={MAXIMUM_TEXT_LENGTH}
-        minLength={MINIMUM_TEXT_LENGTH}
+        onChange={onHandleChange}
+        value={dataReviews}
+        disabled={loadingStatusReviews}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
-          To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
+          To submit review please make sure to set{' '}
+          <span className="reviews__star">rating</span> and describe your stay
+          with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled = {authorizationStatus !== AuthorizationStatus.Auth || !dataStar || dataReviews.length < MINIMUM_TEXT_LENGTH || dataReviews.length > MAXIMUM_TEXT_LENGTH}
-        >Submit
+          disabled={
+            loadingStatusReviews ||
+            authorizationStatus !== AuthorizationStatus.Auth ||
+            !dataStar ||
+            dataReviews.length < TEXT_LENGTH.MINIMUM ||
+            dataReviews.length > TEXT_LENGTH.MAXIMUM
+          }
+        >
+          Submit
         </button>
       </div>
     </form>
   );
 }
-const FormReviews = memo(FormReviewsRew);
+const FormReviews = memo(FormReviewsRaw);
 export default FormReviews;

@@ -1,8 +1,17 @@
-function NotFoundPage():JSX.Element{
-  return(
-    <h1 style={{fontSize: '10vh', textAlign: 'center', display: 'flex',color:'#4481c3', justifyContent: 'center', height:'100vh', flexDirection: 'column'}}>
-      404 Not Found
-    </h1>
+function NotFoundPage(): JSX.Element {
+  return (
+    <div className="page page--favorites-empty">
+      <main className="page__main page__main--favorites page__main--favorites-empty">
+        <div className="page__favorites-container container">
+          <section className="favorites favorites--empty">
+            <h1 className="visually-hidden">Favorites (empty)</h1>
+            <div className="favorites__status-wrapper">
+              <b className="favorites__status">404 Not Found</b>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
   );
 }
 

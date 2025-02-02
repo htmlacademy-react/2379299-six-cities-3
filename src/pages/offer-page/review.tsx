@@ -6,12 +6,12 @@ type Props={
   review: Reviews;
 }
 
-function ReviewRew({review}: Props):JSX.Element{
+function ReviewRaw({review}: Props):JSX.Element{
   return(
     <p className="offer__text">
       {review.comment}
     </p>
   );
 }
-const Review = memo(ReviewRew);
+const Review = memo(ReviewRaw);
 export default Review;

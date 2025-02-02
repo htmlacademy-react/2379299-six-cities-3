@@ -4,12 +4,12 @@ type Props={
   good:string;
 }
 
-function GoodsRew({good}:Props):JSX.Element {
+function GoodsRaw({good}:Props):JSX.Element {
   return(
     <li className="offer__inside-item">
       {good}
     </li>
   );
 }
-const Goods = memo(GoodsRew);
+const Goods = memo(GoodsRaw);
 export default Goods;

@@ -1,15 +1,15 @@
-import FormComments from './form-reviews';
+import FormReviews from './form-reviews';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchNearbyOffers, fetchOfferAction, fetchReviews, saveFavoriteOffers } from '../../store/api-action';
-import { Navigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 import LoadingScreen from '../loading-screen/loading-screen';
 import OfferGalleryImage from './offer-gallery-image';
 import Goods from './goods';
 import Map from '../../components/map/map';
 import OfferCard from '../../components/offer-card/offer-card';
 import ReviewsItem from './reviews-item';
-import { AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
+import { AppRoute, AuthorizationStatus, MAX_COUNT_REVIEWS } from '../../components/const';
 import { PointForMap } from '../../types/point-for-map';
 import { SetupForMap } from '../../types/setup-for-map';
 
@@ -27,17 +27,16 @@ function OfferPage():JSX.Element{
     }
   },[prodId, dispatch]);
 
-  const loadingStatus = useAppSelector((state) => state.isOfferDataLoading);
-  const loadingStatusNearby = useAppSelector((state) => state.isNearbyOfferDataLoading);
-  const currentOffer = useAppSelector((state) => state.offer);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const reviews = useAppSelector((state) => state.reviews);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers).slice(0,3);
+  const loadingStatus = useAppSelector((state) => state.loading.isOfferDataLoading);
+  const loadingStatusNearby = useAppSelector((state) => state.loading.isNearbyOfferDataLoading);
+  const currentOffer = useAppSelector((state) => state.offers.offer);
+  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
+  const reviews = useAppSelector((state) => state.user.reviews);
+  const nearbyOffers = useAppSelector((state) => state.offers.nearbyOffers).slice(0,3);
   const sortingReviews = [...reviews].sort((a , b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, MAX_COUNT_REVIEWS);
-  const [isFavorite, setIsFavorite] = useState<boolean>(currentOffer?.isFavorite ?? false);
+  const navigate = useNavigate();
 
-
-  if (loadingStatus || loadingStatusNearby || !currentOffer || loadingStatus){
+  if (loadingStatus || loadingStatusNearby){
 
     return <LoadingScreen />;
   }
@@ -46,15 +45,15 @@ function OfferPage():JSX.Element{
     return <Navigate replace to="/not-found-page" />;
   }
 
-
-  const handlerClick = (id: string) => {
-    if(authorizationStatus === AuthorizationStatus.Auth){
+  const handleClick = () => {
+    if(authorizationStatus === AuthorizationStatus.NoAuth){
+      navigate(AppRoute.Login);
+    }else{
       dispatch(
         saveFavoriteOffers({
-          offerId: id,
-          status: Number(!isFavorite),
+          offerId: currentOffer.id,
+          status: currentOffer.isFavorite,
         }));
-      setIsFavorite(!isFavorite);
     }
   };
 
@@ -78,6 +77,7 @@ function OfferPage():JSX.Element{
   });
 
   const {title, id, isPremium, rating, goods, host, price, description, images, type, bedrooms, maxAdults} = currentOffer;
+  const imagesOffer = images.slice(0, 6);
 
   const ratingOffer = Math.round(rating);
   return(
@@ -85,7 +85,7 @@ function OfferPage():JSX.Element{
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {images.map((img) => <OfferGalleryImage img={img} key={img}/>)}
+            {imagesOffer.map((img) => <OfferGalleryImage img={img} key={img}/>)}
           </div>
         </div>
         <div className="offer__container container">
@@ -101,9 +101,9 @@ function OfferPage():JSX.Element{
                 {title}
               </h1>
               <button
-                className={`offer__bookmark-button button  ${isFavorite ? 'offer__bookmark-button--active' : '' } `}
+                className={`offer__bookmark-button button  ${currentOffer.isFavorite ? 'offer__bookmark-button--active' : '' } `}
                 type="button"
-                onClick={() => handlerClick(currentOffer.id)}
+                onClick={handleClick}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use href="#icon-bookmark"></use>
@@ -142,15 +142,13 @@ function OfferPage():JSX.Element{
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                <div className={`offer__avatar-wrapper ${host.isPro && 'offer__avatar-wrapper--pro'} user__avatar-wrapper`}>
+                  <img className="offer__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
                   {host.name}
                 </span>
-                <span className="offer__user-status">
-                  {host.isPro ? 'Pro' : ''}
-                </span>
+                {host.isPro && <span className="offer__user-status">Pro</span>}
               </div>
               <div className="offer__description">
                 {description}
@@ -161,7 +159,7 @@ function OfferPage():JSX.Element{
               <ul className="reviews__list">
                 {sortingReviews.map((review) => <ReviewsItem review={review} key={review.id}/>)}
               </ul>
-              {authorizationStatus === AuthorizationStatus.Auth && (<FormComments id={id} />)}
+              {authorizationStatus === AuthorizationStatus.Auth && (<FormReviews id={id} />)}
             </section>
           </div>
         </div>
@@ -173,7 +171,7 @@ function OfferPage():JSX.Element{
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            {nearbyOffers.map((offer) => <OfferCard offer={offer} key={offer.id} />)}
+            {nearbyOffers.map((offer) => <OfferCard offer={offer} key={offer.id} authorizationStatus={authorizationStatus} isNear />)}
           </div>
         </section>
       </div>
