@@ -39,7 +39,7 @@ function LayoutRaw():JSX.Element{
 
   return(
     <div className={`page ${text}`}>
-      <Header isShowUserDate={isShowUserDate} isLogoActive={location.pathname === AppRoute.Main}/>
+      <Header isShowUserDate={isShowUserDate} isLogoActive={location.pathname === AppRoute.Main.toString()}/>
       <Outlet />
 
       {footerPage && (
