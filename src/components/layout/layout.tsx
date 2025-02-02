@@ -27,6 +27,7 @@ function LayoutRaw():JSX.Element{
         text = '';
       }else{
         text = 'page--favorites-empty';
+
       }
       footerPage = true;
       isShowUserDate = true;
@@ -38,7 +39,7 @@ function LayoutRaw():JSX.Element{
 
   return(
     <div className={`page ${text}`}>
-      <Header isShowUserDate={isShowUserDate}/>
+      <Header isShowUserDate={isShowUserDate} isLogoActive={location.pathname === AppRoute.Main}/>
       <Outlet />
 
       {footerPage && (

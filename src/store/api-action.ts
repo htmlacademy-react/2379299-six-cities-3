@@ -78,7 +78,7 @@ export const fetchNearbyOffers = createAsyncThunk<void, string, {
   async (offerId, {dispatch, extra: api}) => {
     dispatch(setNearbyOfferDataLoadingStatus(true));
     try{
-      const {data} = await api.get<Offers>(`${APIRoute.Offers}/1${offerId}/nearby`);
+      const {data} = await api.get<Offers>(`${APIRoute.Offers}/${offerId}/nearby`);
       dispatch(loadNearbyOffers(data));
     }catch{
       dispatch(setError('Failed to load nearby offer data'));
@@ -123,7 +123,6 @@ export const saveFavoriteOffers = createAsyncThunk<void, StatusFavorite , {
       dispatch(setError('Failed to save offer to favorites'));
     } finally {
       dispatch(setFavoriteOffersSaveStatus(false));
-      dispatch(fetchFavoriteOffers());
     }
   },
 );
@@ -158,6 +157,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
       const {data} = await api.get<UserData>(APIRoute.Login);
       dispatch(getUserData(data));
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
+      dispatch(fetchFavoriteOffers());
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     }
@@ -175,6 +175,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
       const {data} = await api.post<UserData>(APIRoute.Login, {email, password});
       dispatch(getUserData(data));
       saveToken(data.token);
+      dispatch(fetchFavoriteOffers());
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
     } catch (error) {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));

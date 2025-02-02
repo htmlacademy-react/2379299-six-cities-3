@@ -142,15 +142,13 @@ function OfferPage():JSX.Element{
             <div className="offer__host">
               <h2 className="offer__host-title">Meet the host</h2>
               <div className="offer__host-user user">
-                <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                <div className={`offer__avatar-wrapper ${host.isPro && 'offer__avatar-wrapper--pro'} user__avatar-wrapper`}>
+                  <img className="offer__avatar user__avatar" src={host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="offer__user-name">
                   {host.name}
                 </span>
-                <span className="offer__user-status">
-                  {host.isPro ? 'Pro' : ''}
-                </span>
+                {host.isPro && <span className="offer__user-status">Pro</span>}
               </div>
               <div className="offer__description">
                 {description}
@@ -173,7 +171,7 @@ function OfferPage():JSX.Element{
         <section className="near-places places">
           <h2 className="near-places__title">Other places in the neighbourhood</h2>
           <div className="near-places__list places__list">
-            {nearbyOffers.map((offer) => <OfferCard offer={offer} key={offer.id} />)}
+            {nearbyOffers.map((offer) => <OfferCard offer={offer} key={offer.id} authorizationStatus={authorizationStatus} isNear />)}
           </div>
         </section>
       </div>

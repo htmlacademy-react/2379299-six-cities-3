@@ -1,20 +1,22 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Offer } from '../../types/offer';
 import { Link, useNavigate } from 'react-router-dom';
 import { saveFavoriteOffers } from '../../store/api-action';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { AppRoute, AuthorizationStatus } from '../const';
 
 type Props = {
   offer: Offer;
   onSetActiveOffer?: (id: string) => void;
+  authorizationStatus: AuthorizationStatus;
+  isNear: boolean;
 };
 
 const RATING_MULTIPLIER = 20;
 
-function OfferCardRaw({ offer, onSetActiveOffer }: Props): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
-  const { id, title, price, isPremium, type, previewImage, rating, isFavorite } = offer;
+function OfferCardRaw({ offer, onSetActiveOffer, authorizationStatus, isNear }: Props): JSX.Element {
+  const [isFavorite, setIsFavorite] = useState<boolean>(offer.isFavorite);
+  const { id, title, price, isPremium, type, previewImage, rating } = offer;
   const ratingOffer = Math.round(rating) * RATING_MULTIPLIER;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -35,6 +37,7 @@ function OfferCardRaw({ offer, onSetActiveOffer }: Props): JSX.Element {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       navigate(AppRoute.Login);
     } else {
+      setIsFavorite(!isFavorite);
       dispatch(
         saveFavoriteOffers({
           offerId: id,
@@ -46,7 +49,7 @@ function OfferCardRaw({ offer, onSetActiveOffer }: Props): JSX.Element {
 
   return (
     <article
-      className="cities__card place-card"
+      className={`cities__card place-card ${isNear && 'near-places__card'}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

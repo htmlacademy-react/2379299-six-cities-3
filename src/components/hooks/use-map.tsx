@@ -15,7 +15,7 @@ function useMap(mapRef:React.RefObject<HTMLDivElement>, setupForMap: SetupForMap
       },setupForMap.zoom,
       );
     }
-  }, [setupForMap]);
+  }, [setupForMap, map]);
 
 
   useEffect(() => {

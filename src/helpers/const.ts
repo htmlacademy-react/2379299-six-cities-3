@@ -8,15 +8,15 @@ export const COUNT_STAR = [
     value:4
   },
   {
-    title:'perfect',
+    title:'not bad',
     value:3
   },
   {
-    title:'perfect',
+    title:'badly',
     value:2
   },
   {
-    title:'perfect',
+    title:'terribly',
     value:1
   }
 ];

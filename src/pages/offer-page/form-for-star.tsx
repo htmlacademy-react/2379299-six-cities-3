@@ -1,29 +1,35 @@
-import { Fragment, memo} from 'react';
+import { Fragment, memo } from 'react';
 
 type Star = {
   value: number;
   title: string;
-}
+};
 
 type Props = {
-  star: Star ;
+  star: Star;
   onSetDataStar: (value: number) => void;
-  dataStar:number | undefined;
+  dataStar: number | undefined;
   loadingStatusReviews: boolean;
-}
+};
 
-function FormForStarRaw({loadingStatusReviews, star, onSetDataStar, dataStar}:Props):JSX.Element{
-
-  return(
+function FormForStarRaw({
+  loadingStatusReviews,
+  star,
+  onSetDataStar,
+  dataStar,
+}: Props): JSX.Element {
+  return (
     <Fragment key={star.value}>
-      <input className="form__rating-input visually-hidden" name="rating"
+      <input
+        className="form__rating-input visually-hidden"
+        name="rating"
         value={star.value}
         id={`${star.value}-stars`}
         type="radio"
-        onClick={() => {
+        onChange={() => {
           onSetDataStar(star.value);
         }}
-        defaultChecked={star.value === dataStar}
+        checked={star.value === dataStar}
         disabled={loadingStatusReviews}
       />
       <label
@@ -41,4 +47,3 @@ function FormForStarRaw({loadingStatusReviews, star, onSetDataStar, dataStar}:Pr
 
 const FormForStar = memo(FormForStarRaw);
 export default FormForStar;
-

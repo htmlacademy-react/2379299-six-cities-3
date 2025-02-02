@@ -2,16 +2,15 @@ import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import { saveFavoriteOffers } from '../../store/api-action';
 import { memo } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 
 type Props = {
   offer: Offer;
 }
 
-function FavoritCardRaw({ offer }: Props): JSX.Element {
+function FavoritCardRaw({ offer }: Props): JSX.Element | null {
   const { title, price, type, previewImage, rating, id } = offer;
   const dispatch = useAppDispatch();
-  const loadingStatusSave = useAppSelector((state) => state.loading.isFavoriteOffersSave);
   const ratingPercent = `${Math.round(rating) * 20}%`;
 
   const handleClick = () => {
@@ -51,7 +50,6 @@ function FavoritCardRaw({ offer }: Props): JSX.Element {
             className={`place-card__bookmark-button button ${offer.isFavorite ? 'place-card__bookmark-button--active' : ''}`}
             type="button"
             onClick={handleClick}
-            disabled={loadingStatusSave}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use href="#icon-bookmark"></use>

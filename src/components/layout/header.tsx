@@ -6,9 +6,10 @@ import { memo } from 'react';
 
 type Props = {
   isShowUserDate: boolean;
+  isLogoActive: boolean;
 }
 
-function HeaderRew({isShowUserDate}: Props):JSX.Element{
+function HeaderRew({isShowUserDate, isLogoActive}: Props):JSX.Element{
 
   const authorizationStatus = useAppSelector((state) => state.loading.authorizationStatus);
   const userData = useAppSelector((state) => state.user.userData);
@@ -33,7 +34,7 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link header__logo-link--active" to={AppRoute.Main}>
+            <Link className={`header__logo-link  ${isLogoActive ? 'header__logo-link--active' : ''}`} to={AppRoute.Main}>
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
@@ -50,7 +51,7 @@ function HeaderRew({isShowUserDate}: Props):JSX.Element{
                           <span className="header__user-name user__name">{authorizationStatus === AuthorizationStatus.Auth ? userData?.email : null}</span>
                           <span className="header__favorite-count">{authorizationStatus === AuthorizationStatus.Auth ? favoriteOffers.length : null}</span>
                         </>
-                        : <span className="header__signout">Sign in</span>
+                        : <span className="header__login">Sign in</span>
                     }
                   </Link>
                 </li>

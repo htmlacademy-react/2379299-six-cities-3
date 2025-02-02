@@ -2,8 +2,8 @@ import { createSelector, Selector } from 'reselect';
 import { Offer, Offers } from '../../types/offer';
 import type { State } from '../../types/state';
 
-const stateOffers: Selector<State, Offers> = (state: State): Offers =>
-  state.offers;
+const stateOffers: Selector<State, Offer[]> = (state: State): Offer[] =>
+  state.offers.offers;
 
 const stateCity: Selector<State, string, [string]> = (
   state: State,
@@ -17,14 +17,14 @@ const stateSort: Selector<State, string, [string, string]> = (
 
 const selectOffersByCity = createSelector<
   [
-    Selector<State, Offers>,
+    Selector<State, Offer[]>,
     Selector<State, string, [string]>,
     Selector<State, string, [string, string]>
   ],
   Offers
 >(
   [stateOffers, stateCity, stateSort],
-  (offers: Offers, city: string, sort: string): Offers => {
+  (offers: Offer[], city: string, sort: string): Offer[] => {
     const offersByCity = offers.filter(
       (offer: Offer) => offer.city.name === city
     );

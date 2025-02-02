@@ -1,14 +1,14 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthData } from '../../types/auth-data ';
 import { clearErrorAction, loginAction } from '../../store/api-action';
-import { useAppDispatch} from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { changeCurrentCity, setError } from '../../store/action';
 import { cities } from '../../helpers/const';
 import { getRandomValue } from '../../helpers/utils';
-import { AppRoute } from '../../components/const';
+import { AppRoute, AuthorizationStatus } from '../../components/const';
 
-function LoginPage():JSX.Element{
+function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
@@ -18,23 +18,27 @@ function LoginPage():JSX.Element{
     dispatch(loginAction(authData));
   };
 
-  const handleSubmit = (evt: FormEvent<HTMLFormElement>) =>{
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     if (passwordRef.current !== null && emailRef.current !== null) {
       const password = passwordRef.current.value;
-      if(/[A-Za-z]/.test(password) && /\d/.test(password)){
+      if (/[A-Za-z]/.test(password) && /\d/.test(password)) {
         onSubmit({
-          email:emailRef.current.value,
-          password:passwordRef.current.value,
+          email: emailRef.current.value,
+          password: passwordRef.current.value,
         });
-      }else {
-        dispatch(setError('Пароль должен содержать как минимум одну букву и одну цифру.'));
+      } else {
+        dispatch(
+          setError(
+            'Пароль должен содержать как минимум одну букву и одну цифру.'
+          )
+        );
         dispatch(clearErrorAction());
       }
     }
   };
 
-  return(
+  return (
     <main className="page__main page__main--login">
       <div className="page__login-container container">
         <section className="login">
@@ -67,7 +71,9 @@ function LoginPage():JSX.Element{
                 required
               />
             </div>
-            <button className="login__submit form__submit button" type="submit">Sign in</button>
+            <button className="login__submit form__submit button" type="submit">
+              Sign in
+            </button>
           </form>
         </section>
         <section className="locations locations--login locations--current">
@@ -75,7 +81,7 @@ function LoginPage():JSX.Element{
             <Link
               className="locations__item-link"
               to={AppRoute.Main}
-              onClick={() => dispatch(changeCurrentCity({currentCity: randomCity}))}
+              onClick={() => dispatch(changeCurrentCity({ currentCity: randomCity }))}
             >
               <span>{randomCity}</span>
             </Link>
