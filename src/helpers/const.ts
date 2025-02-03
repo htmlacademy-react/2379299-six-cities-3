@@ -1,5 +1,5 @@
 export const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
-export const COUNT_STAR = [
+export const COUNT_STARS = [
   {
     title:'perfect',
     value:5},

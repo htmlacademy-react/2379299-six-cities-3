@@ -3,7 +3,7 @@ import { clearErrorAction, saveReviews } from '../../store/api-action';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import FormForStar from './form-for-star';
 import { AuthorizationStatus, TEXT_LENGTH } from '../../components/const';
-import { COUNT_STAR } from '../../helpers/const';
+import { COUNT_STARS } from '../../helpers/const';
 import { removeSuccess, setError } from '../../store/action';
 
 type Props = {
@@ -67,7 +67,7 @@ function FormReviewsRaw({ id }: Props): JSX.Element {
         Your review
       </label>
       <div className="reviews__rating-form form__rating">
-        {COUNT_STAR.map((star) => (
+        {COUNT_STARS.map((star) => (
           <FormForStar
             loadingStatusReviews={loadingStatusReviews}
             dataStar={dataStar}
